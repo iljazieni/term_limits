@@ -1,0 +1,9 @@
+1/11/22     DATA STRUCTURE
+
+- variables candidate_id, year, and month do not uniquely identify the data because month is missing for 663 obs
+- for 3 obs the district type is missing (but legbranch is not) - so we should be able to research those districts and figure it out
+- V09 is a much better measure of district than var distr (which is mostly missing)
+- "candidate_fullname" missing 29 obs. Check if we can fix this with other name variables [no we can't] - we do have party affiliation and other details - could populate by researching those elections manually
+- same as above with "incumbent" var: 28 missing  - all 28 instances belong to the 29 candidate_fullname missing instances - could find both simultaneously - winner is never missing so that could help with figuring out these 29 obs outlined above - nr of candidates is also never missing so if nr_candidates=1 that also helps figure it out
+- V43 very important variable to revisit during analysis - it clarifies what other variables there is uncertainty about
+- what I should construct is an indicator for each election [i.e. one unique id for each election which is the same for different candidates running for the same seat (vars that don't change within that id: year, month, district, legbranch, state, etc.) (vars that change within that id: cand_name, party_code, winner_var)]

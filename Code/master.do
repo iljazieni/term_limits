@@ -2,7 +2,7 @@
 
 CREATED: 1/10/2022
 
-This dofile runs all the auxilliary dofiles for this project 
+This dofile runs all the auxilliary dofiles for this project
 
 Input: none
 Output: none
@@ -20,7 +20,11 @@ clear all
 
 // Switches
 
-local clean       1
+local clean           1
+local analysis        0
 
 
 if `clean'==1  do "${code}/clean.do"
+
+
+if `analysis'==1  do "${code}/analysis.do"
