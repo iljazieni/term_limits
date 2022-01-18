@@ -1,4 +1,4 @@
-1/11/22     DATA STRUCTURE
+DATA STRUCTURE
 
 - variables candidate_id, year, and month do not uniquely identify the data because month is missing for 663 obs
 - for 3 obs the district type is missing (but legbranch is not) - so we should be able to research those districts and figure it out
@@ -6,4 +6,36 @@
 - "candidate_fullname" missing 29 obs. Check if we can fix this with other name variables [no we can't] - we do have party affiliation and other details - could populate by researching those elections manually
 - same as above with "incumbent" var: 28 missing  - all 28 instances belong to the 29 candidate_fullname missing instances - could find both simultaneously - winner is never missing so that could help with figuring out these 29 obs outlined above - nr of candidates is also never missing so if nr_candidates=1 that also helps figure it out
 - V43 very important variable to revisit during analysis - it clarifies what other variables there is uncertainty about
-- what I should construct is an indicator for each election [i.e. one unique id for each election which is the same for different candidates running for the same seat (vars that don't change within that id: year, month, district, legbranch, state, etc.) (vars that change within that id: cand_name, party_code, winner_var)]
+- I have constructed an indicator for each election [i.e. one unique id for each election which is the same for different candidates running for the same seat (vars that don't change within that id: year, month, district, legbranch, state, etc.) (vars that change within that id: cand_name, party_code, winner_var)]
+
+- V09 (distr_nr) is a much better indicator of district than var distr (because distr has 274,394 missing obs. whereas V09 only has 5,527 missing obs). However, for 5,524/5,527 of these missing obs of V09, distr!="" - meaning we can use the var distr to populate V09 - limits to doing this: distr is only populated with str1 ; most likely not enough to figure out which district is which
+
+TASKS:
+
+1. Construct a dummy var term-limited (indicating when a candidate is term-limited)
+How to do that?
+- Use the times_run variable - then once you have a variable for the term limit of that state in a different column, identify the term limited cases by checking instances when nr_runs==max_terms  - careful! make sure the nr_runs captures only WINS and for the same office! (they can run for different offices and the term limit doesn't kick in)
+
+2. nr_dem/nr_rep/nr_other seem prone to outliers - investigate further
+
+4. Consider!!! what implications does it have for the term limit if someone is elected but doesn't serve the full term (differences between term_length_law and term_length_actual)
+
+5. Do term_limits apply to different districts within the same state?
+
+6. Careful with figuring out a measure of whether we observe the same last name - you SHOULD NOT look for same last name in the SAME election - you need to figure out a way to construct a measure that checks if someone with the SAME SURNAME but DIFFERENT NAME runs in the NEXT election for the SAME SEAT CONDITIONAL ON THE CANDIDATE IN ELECTION T-1 BEING TERM LIMITED   
+
+
+DATA ISSUES
+
+1. instances where the same district-month-year-legbranch have different elections - read up on how many elections for which positions are there in a given year/month (for ex. see District 12 in Alabama on Nov. 1970)
+2. Nr of candidates variable is messed up - there are cases where nr of candidates=1 but that candidate is not the winner
+3. Sanity checks re nr of candidates
+[gen sum_cand = nr_dem + nr_rep + nr_other
+compare nr_cand sum_cand    // issue: these two vars are not identical
+gen check= sum_cand-nr_cand   // very skewed distribution - watch out for nr_cand outliers  // note that the discrepancy here might be caused by the fact that write-in candidates are not counted]
+4.
+
+
+QUESTIONS FOR IAN
+
+1.
