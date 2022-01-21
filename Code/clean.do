@@ -31,7 +31,7 @@ replace legbranch=1 if legbranch==9       // house
 bys state year month legbranch distr_nr total_votes: gen election_id=_n if _n==1    // add total votes here
 replace election_id=sum(election_id)
 
-// Construct a measure that investigates how often same state-year-month-legbranch-district combination has different elections and discuss with Ian if we should trust/keep that data
+// Construct a measure that investigates how often same state-year-month-legbranch-district combination has different elections and discuss with Ian/Paolo if we should trust/keep that data
 bys state year month legbranch distr_nr: gen red_flag=_n if _n==1    // add total votes here
 replace red_flag=sum(red_flag)
 
@@ -39,7 +39,6 @@ replace red_flag=sum(red_flag)
 bys state legbranch candidate_id winner: gen times_run=_n
 
 
-// 
 
 // save as new dataset
 cap save "${root}/clean_data.dta", replace

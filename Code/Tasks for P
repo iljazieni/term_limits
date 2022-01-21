@@ -1,15 +1,15 @@
 
 PRIMARY RESEARCH
 
-1. Research when each state passed a term limiting measure for different legislative branches and what that limit is 
+1. Research when each state passed a term limiting measure for different legislative branches and what that limit is
 2. What implications does it have for the term limit if someone is elected but doesn't serve the full term (differences between term_length_law and term_length_actual)
 3. Do term_limits bite if someone runs in a different district within the same state?
-4. How many different elections could there be in the same state-year-month-legbranch-district? (ex. Alabama-1970-11-0-12 has 7 different elections in our data - is there an issue with the data?)
+4. How many different elections could there be in the same state-year-month-legbranch-district? (ex. Alabama-1970-11-0-12 has 7 different elections - is there an issue with the data?)
 5. Upload in Dropbox the Original P.I. Documentation in the ICPSR Codebook for full value labels (ex. var election_type).
 
 
 TECHNICAL/CODING
 
-1. Construct a measure that indicates when each state passed term-limiting legislation and what that term limit is
+1. Construct two new variables: 1) term_limit_dummy - indicates whether/when each state passed term-limiting legislation, and 2) term_limits - indicates what that term limit is (please see var_structure.xlsx for example/details on how this measure should be constructed)
 2. Investigate whether the issue with number of candidates variables (the fact that nr_cand!=nr_dems + nr_reps) could be caused by write-in candidates not being counted for this variable (nr_cand)
 3. Encode election_type once you have the ICPSR codebook
