@@ -26,6 +26,8 @@ rename (CASEID V01 V05 V06 V07 V08 V12 V18 V19 V22 V24 V14 V15 V16 V17 V20 V21 V
 replace legbranch=0 if legbranch==8        // senate
 replace legbranch=1 if legbranch==9       // house
 
+// Sort data chronologically
+sort state year month
 
 // Construct an election identifier
 bys state year month legbranch distr_nr total_votes: gen election_id=_n if _n==1    // add total votes here
@@ -36,9 +38,39 @@ bys state year month legbranch distr_nr: gen red_flag=_n if _n==1    // add tota
 replace red_flag=sum(red_flag)
 
 // Construct a variable that captures how many times a candidate has run (and won) in a legislative branch of a state over time
-bys state legbranch candidate_id winner: gen times_run=_n
+bys state legbranch candidate_id winner: gen times_elected=_n
+
+// Construct a variable that captures whether a candidate is term limited
+/* RUN AFTER YOU HAVE THESE VARIABLES
+bys candidate_id: gen cand_limited=1 if times_run==term_limit
+
+gen match=.
+
+foreach st in state {
+
+if cand_limited==1 {  // can't start with this bc it's only going to look at term limited candidates and we obviously are trying to identify the 'new' nepotistic candidate
+
+local surname=cand_surname
+local name=cand_name
+
+replace match=1 if year=`year'+1 & cand_surname==`surname' & cand_name!=`name'
+
+}
+}
 
 
+// another strategy would be to count how many Smiths run in each state over the entire time span and check if there are instances where their names aren't the same:
+duplicates tag state cand_surname, gen(surname_level)
+duplicates tag state cand_surname cand_name, gen(individual_level)
+gen nepotism=1 if surname_level>individual_level // note!! here you have to be careful to make sure there's an identifier of whether someone has won at least once [i.e. to avoid cases when we observe a candidate with the same name run after another candidate that shared their name but was never elected- you can use variable incumbent/winner for this]
+bys candidate_id: gen ever_elected=sum(winner)
+Nb that in this strategy you still have to incorporate the term limit element 
 
+*/
+
+
+// Identify speacial elections (check notes from meeting with Ian)
+sort state year month election_id
+br
 // save as new dataset
 cap save "${root}/clean_data.dta", replace

@@ -14,7 +14,7 @@ TASKS:
 
 1. Construct a dummy var term-limited (indicating when a candidate is term-limited)
 How to do that?
-- Use the times_run variable - then once you have a variable for the term limit of that state in a different column, identify the term limited cases by checking instances when nr_runs==max_terms  - careful! make sure the nr_runs captures only WINS and for the same office! (they can run for different offices and the term limit doesn't kick in)
+- Use the times_run variable - then once you have a variable for the term limit of that state in a different column, identify the term limited cases by checking instances when nr_runs==max_terms  - careful! make sure the nr_runs captures only WINS and for the same office! (they can run for different offices and the term limit doesn't kick in?)
 
 2. nr_dem/nr_rep/nr_other seem prone to outliers - investigate further
 
@@ -22,7 +22,7 @@ How to do that?
 
 5. Do term_limits apply to different districts within the same state?
 
-6. Careful with figuring out a measure of whether we observe the same last name - you SHOULD NOT look for same last name in the SAME election - you need to figure out a way to construct a measure that checks if someone with the SAME SURNAME but DIFFERENT NAME runs in the NEXT election for the SAME SEAT CONDITIONAL ON THE CANDIDATE IN ELECTION T-1 BEING TERM LIMITED   
+6. Careful with figuring out a measure of whether we observe the same last name - you SHOULD NOT look for same last name in the SAME election - you need to figure out a way to construct a measure that checks if someone with the SAME SURNAME but DIFFERENT NAME runs in the NEXT election for the SAME SEAT CONDITIONAL ON THE CANDIDATE IN ELECTION T-1 BEING TERM LIMITED
 
 
 DATA ISSUES
@@ -38,4 +38,5 @@ gen check= sum_cand-nr_cand   // very skewed distribution - watch out for nr_can
 
 QUESTIONS FOR IAN
 
-1.
+1. Are we only looking into whether a family member runs in the election right after the one where the incumbent is vacating their seat because they are term limited? [ex.: Smith Sr's mandate is 1974-1978 and they're term limited so in the 1974 elections Smith Jr runs -- or also runs with the same last name in any later election?]
+2. Show Ian ALQUIST candidates example (candidates in different branches at first) & LEONARD example (candidates alternate)
