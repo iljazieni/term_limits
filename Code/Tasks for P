@@ -2,16 +2,16 @@
 1. PRIMARY RESEARCH
 
 1. How many different elections could there be in the same state-year-month-legbranch-district? [ex. Alabama-1970-11-0-12 has 7 different elections - is there an issue with the data? You can use variable "red_flag" in elections_clean.dta to check this]
-2. Have there ever been any term limiting legislations enacted in any state before our dataset starts?
+2. Have there ever been any term limiting legislations enacted in any state before our dataset starts? - None. The first term limits were enacted in 1990 in Colorado and Oklahoma.
 3. For the 5 states that have lifetime term limits, what is the limit for each of them? [Please complete in table below]
 
-| State | Lifetime term limit |
-| ----- | ------------------- |
-| CA    |                     |
-| MI    |                     |
-| MO    |                     |
-| NV    |                     |
-| OK    |                     |
+| State | Lifetime term limit (House) | Lifetime term limit (Senate) |
+| ----- | --------------------------- | ---------------------------- |
+| CA    |              3 terms        |               2 terms        |
+| MI    |              3 terms        |               2 terms        |
+| MO    |              8 years        |               8 years        |
+| NV    |              12 years       |               12 years       |
+| OK    |                12 years, House and Senate combined         |
 
 
 
@@ -21,22 +21,35 @@
 
 | State | Year Enacted | Limit Years House | Year of Impact House (data) | Year of Impact (calc'd using LimitTermsHouse) |
 | ----- | ------------ | ----------------- | --------------------------- | --------------------------------------------- |
-| ME    | 1993         | 8                 | 1996                        | 2001                                          |
-| MO    | 1992         | 8                 | 2002                        | 2000                                          |
-| NV    | 1996         | 12                | 2010                        | 2008                                          |
-| OK    | 1990         | 12                | 2004                        | 2002                                          |
+| ME    | 1993         | 8                 | 1996 (correct; retroactive) | 2001                                          | 
+| MO    | 1992         | 8                 | 2002 (correct; delayed)     | 2000                                          |
+| NV    | 1996         | 12                | 2010 (correct; delayed)     | 2008                                          |
+| OK    | 1990         | 12                | 2004 (correct; delayed)     | 2002                                          |
+
+- Notes
+-- ME - The year of impact is 1996, i.e., the Nov. 1996 election. The term limits measure was enacted in 1993 (off-cycle election), but provided that term limits would be effective on "terms of office that begin on or after Dec. 3, 1996." Because of the wording of the measure, legislators who already served eight consecutive years by Dec. 2, 1996 (so elected in 1988) were term-limited and barred from running in the Nov. 1996 election.
+-- MO - The year of impact is 2002, i.e., the Nov. 2002 election. The term limits measure was enacted in Nov. 1992, but had a provision that "service in the General Assembly resulting from an election or appointment prior to the effective date of this section shall not be counted." As the term-limit measure took effect in Dec. 1992, the the first election that counted in the 8-year term limit was the Nov. 1994 election. This meant that a candidate who won in Nov. 1994 and every election thereafter would be first barred from running in the Nov. 2002 election.
+-- NV - The year of impact is 2010, i.e., the Nov. 2010 election. Courts have interpreted the Nevada measure as beginning the 12-year count to legislators elected during the Nov. 1998 election, not the immediately prior Nov. 1996 election.
+-- OK - The year of impact is 2004, i.e., the Nov. 2004 election. The term-limits measure was approved on September 1990 and provided that it would take effect on January 1, 1991. While there was an election in the interim (on Nov. 1990), the 12-year count began for legislators elected during the Nov. 1992 election.
 
 - SENATE
 
 | State | Year Enacted | Limit Years Senate| Year of Impact Senate (data) | Year of Impact (calc'd using LimitYearsSenate) |
 | ----- | ------------ | ----------------- | --------------------------- | ----------------------------------------------- |
-| ME    |    1993      |        8          | 1996                        | 2001                                            |
-| MI    |    1992      |        8          | 2002                        | 2000                                            |
-| MO    |    1992      |        8          | 2002                        | 2000                                            |
-| NE    |    2000      |        8          | 2006                        | 2008                                            |
-| NV    |    1996      |        12         | 2010                        | 2008                                            |
-| OK    |    1990      |        12         | 2004                        | 2002                                            |
+| ME    |    1993      |        8          | 1996 (correct; retroactive) | 2001                                            |
+| MI    |    1992      |        8          | 2002 (correct; delayed)     | 2000                                            |
+| MO    |    1992      |        8          | 2002 (correct; delayed)     | 2000                                            |
+| NE    |    2000      |        8          | 2006 (correct; retroactive) | 2008                                            |
+| NV    |    1996      |        12         | 2010 (correct; delayed)     | 2008                                            |
+| OK    |    1990      |        12         | 2004 (correct; delayed)     | 2002                                            |
 
+- Notes
+-- ME - The year of impact is 1996, i.e., the Nov. 1996 election. Same notes as House, above.
+-- MI - The year of impact is 2002, i.e., the Nov. 2002 election. The term-limits measure was approved on November 1992 and provided that it would take effect on January 1, 1993. As the first election following effectivity is the Nov. 1994 election, that was the beginning of the 8-year count.
+-- MO - The year of impact is 2002, ie., the Nov. 1992 election. Same notes as House, above.
+-- NE - The year of impact is 2006, i.e., the Nov. 2006 election. The term-limits measure was approved on Nov. 2000 and provided that "Service prior to January 1, 2001, as a member of the Legislature shall not be counted for the purpose of calculating consecutive terms," which means it is retroactive. However, Nebraska's senate terms are staggered, so there were senators elected in Nov. 1998 whose term-limits started to run during their Year 3 in office. If they were to run two rounds after Nov. 1998, i.e., in Nov. 2006, they would be on Year 8 in office and thus term-limited.
+-- NV - The year of impact is 2010, i.e., the Nov. 2010 election. Same notes as House, above.
+-- OK - The year of impact is 2004, i.e., the Nov. 2004 election. Same notes as House, above.
 
 
 3. TECHNICAL/CODING
