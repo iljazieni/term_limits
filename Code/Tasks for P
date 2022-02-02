@@ -2,7 +2,13 @@
 1. PRIMARY RESEARCH
 
 1. How many different elections could there be in the same state-year-month-legbranch-district? [ex. Alabama-1970-11-0-12 has 7 different elections - is there an issue with the data? You can use variable "red_flag" in elections_clean.dta to check this]
-2. Have there ever been any term limiting legislations enacted in any state before our dataset starts? - None. The first term limits were enacted in 1990 in Colorado and Oklahoma.
+
+- The number of elections would depend on the type of district. For example, Alabama-1970-11-0-12 is technically just one election for the 12th district of the Alabama House of Representatives. However, because the 12th district is a multi-member district (MMD), there are several posts (seats) in the 12th district. Numbers under "V10b" correspond to the post/seat for which the corresponding candidate has run.
+
+2. Have there ever been any term limiting legislations enacted in any state before our dataset starts?
+
+- None. The first term limits were enacted in 1990 in Colorado and Oklahoma.
+
 3. For the 5 states that have lifetime term limits, what is the limit for each of them? [Please complete in table below]
 
 | State | Lifetime term limit (House) | Lifetime term limit (Senate) |
