@@ -5,6 +5,8 @@
 
 - The number of elections would depend on the type of district. For example, Alabama-1970-11-0-12 is technically just one election for the 12th district of the Alabama House of Representatives. However, because the 12th district is a multi-member district (MMD), there are several posts (seats) in the 12th district. Numbers under "V10b" correspond to the post/seat for which the corresponding candidate has run.
 
+- If we need a unique election identifier, perhaps state-year-month-legbranch-district-V10A-V10B-V10C-V10D might work better. It's a long string but it will be unique. V10 and subs would correspond to to the election type (single-member, multi-member, etc.)
+
 2. Have there ever been any term limiting legislations enacted in any state before our dataset starts?
 
 - None. The first term limits were enacted in 1990 in Colorado and Oklahoma.
