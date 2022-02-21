@@ -10,6 +10,9 @@ DATA STRUCTURE
 
 - V09 (distr_nr) is a much better indicator of district than var distr (because distr has 274,394 missing obs. whereas V09 only has 5,527 missing obs). However, for 5,524/5,527 of these missing obs of V09, distr!="" - meaning we can use the var distr to populate V09 - limits to doing this: distr is only populated with str1 ; most likely not enough to figure out which district is which
 
+- V20 needs detailed cleaning
+
+
 TASKS:
 
 1. Construct a dummy var term-limited (indicating when a candidate is term-limited)
@@ -38,5 +41,136 @@ gen check= sum_cand-nr_cand   // very skewed distribution - watch out for nr_can
 
 QUESTIONS FOR IAN
 
-1. Are we only looking into whether a family member runs in the election right after the one where the incumbent is vacating their seat because they are term limited? [ex.: Smith Sr's mandate is 1974-1978 and they're term limited so in the 1974 elections Smith Jr runs -- or also runs with the same last name in any later election?]
+1. Are we only looking into whether a family member runs in the election right after the one where the incumbent is vacating their seat because they are term limited? [ex.: Smith Sr's mandate is 1974-1978 and they're term limited so in the 1974 elections Smith Jr runs -- or also runs with the same last name in any later election?] - this is particularly relevant given that 3 House seats and 10 Senate seats force candidates to sit out a nr of terms before being able to running again - Paolo says yes - but we do want the nepotistic measure to capture the candidate a nepotistic effect for those that only have to take a break instead of a lifetime term limit? can we interpret that as a sign that candidates are not related?
 2. Show Ian ALQUIST candidates example (candidates in different branches at first) & LEONARD example (candidates alternate)
+NB - Really use Alquist as an example of how to think about Everything (how to capture nepotism across 2 branches; how term limits bite when they're enacted when candidates are halfway through a term, how to deal with different elections in House v Senate falling in different years, etc.)
+
+QUESTIONS FOR PAOLO:
+1. ISSUE with Term Limit Data (Massachusetts, Michigan, Mississippi, New Hampshire, North Carolina, Oklahoma) - yearofimpact!= yearenacted + termlimit*termlength - where does this data come from and which of the variables has measurement error?
+Have there ever been any term limiting legislations enacted in any state before our dataset starts? [this would cause an issue because by not observing how often someone has held office before dataset starts and we observe them being incumbent in our data, we might not know if they're term limited or not]
+2. How many elections can take place in a state-year-month-legbranch-district combination? [refer to red_flag in clean.do]
+3. If a cand wins in 1990 and the limiting leg passes in 1990, does the mandate 1990-1994 count by 1998 (year of impact)? Yes, but Paolo will double check
+4. Double check: term limits don't bite if you switch from house to senate and vice-versa, right? Depends on the State; at least 2 states - see how this interacts with life-term limits
+5. What implications does it have for the term limit if someone is elected but doesn't serve the full term (differences between term_length_law and term_length_actual) - general rule: it counts but there are rules where if someone serves for just 1 day it doesn't count
+6. Do term_limits bite if someone runs in a different district within the same state? Yes
+
+
+2/1/2022 NOTES
+
+- Keep an eye out if you see a LOT of people running or winning n-1 terms when term limit = n
+- Messiness with sitting_legislator elections - multiple elections in same branch same year - example candidate_id==3170
+- Think! how do you know so far which year house elections and which year senate elections have to be for each state, i.e. if you know that house terms 2 yrs long so election have to be every 2 yrs and for senate it's 4, how do you know if it's 1990 which elections happen when? What you're currently doing is using year enacted - but if it's not enacted on an election year that won't work
+
+
+2/3/22
+
+Questions for Paolo:
+
+1. How to best determine which year is an election year for each district/state/legislative branch?
+
+2. Why are there elections every two years in a district if the senate mandate is 4 years long?
+show by:
+
+keep if termlengthsenate==4 & legbranch==0
+tab state year
+
+- STAGGERED TERMS / they only run half the seats / but it is constant for each district across time
+
+3. Issues with Primary Research Task 1 (see notes in tasks for P)
+4. How do we want to deal with cases when candidate_fullname and total_votes are both missing?
+5. What we need is to have a clean dataset of elections - we need to only have elections during election years in a specific district, only have 1 per district per month per year per state
+6. Need to make decisions about the elections for which both candidate_fullname and total_votes are both missing (28)  
+- Also: count if candidate_fullname=="" & winner==1 Result: 27 observation - Should we drop them?
+
+7. Also about 361 obs for which V43=identity // check when V43=winner
+
+EXAMPLES OF MESSY ELECTIONS WE NEED TO FIX:
+
+- Multiple elections for same legislative branch in same month year state (relevant var same_month)
+
+This happens in 492/308,152 districts
+
+- indecisive election (see codebook) - candidate dies / or it's a tie (check if names are the same for the winner)
+
+- Nr of elections in the same year-district-branch but different months (relevant var same_year)
+
+This happens in 2419/308,152 districts
+
+- check if sitting_legislator==0 in all/most of them - if so, they're special elections
+
+Comments to self:  
+
+- Don't care if a district is Multimember or not
+- I care about is uniquely identifying each election properly
+- I care about getting rid of "special" elections that don't determine a sitting legislator  
+
+
+2/3/22 PREP FOR MEETING WITH IAN
+
+- How to deal with runoff elections? Investigate sitting_legislator
+- Figure out what's happening with districts - BIGGEST issue to deal with right now is that elections happen on non-election years + you have to decide what are election years for each state!!!
+
+- For multiple elections in the same year, should we just keep the latest month result?
+- USE winner var. and sitting_legislator var. - if either is 0 then something went wrong with the election
+
+
+
+EXPLANATION
+
+- I was having issues because we observed multiple elections in the same month or the same year for state-year-legbranch-distr_id
+
+- Fixed this by only keeping the elections which determine a sitting legislator (sitting_legislator==1)
+
+- But my concern was that by removing all obs with sitting_legislator==0, we might lose "unique" elections, i.e. that don't have another state-year-branch-district duplicate, and are legitimate but simply have measurement error in sitting_legislator (tried to use var V43 to investigate this but it doesn't seem to be the case) - there are 1,005 observations like these - how do we want to treat them? It's a judgment call as to whether we trust the sitting_legislator variable -
+
+ Show Ian:
+
+- drop sitting_legislator and then keep later elections if there still are some and then see if month duplicates are still an issue
+
+sort state year distr_id legbranch month
+
+br state year month legbranch distr_id election_id candidate_fullname sm_distr sy_distr winner if sy_distr==1
+
+
+- Show Ian 19 obs for when sy_distr==2
+Issue with these observations:
+1. they have the same distr_id but have different distrtype
+2. nr_winners==2 but for orleans3. the first election w 4 candidates we only have 1 winner  - but same person wins so we can just keep the December election
+3. Issue is more with West Virginia '72, '86 and that has same elections in same month and different districts and two different people win
+
+- Do we want to also look at whether someone with the same last name runs for the other legislative branch?
+ALQUIST example: California, Alfred held a senate seat for 7 mandates in a row; halfway through mandate when limit enacted.
+
+
+FIXING THE MISSING MONTHS ISSUE TO MAKE SURE IT DOESN'T INTERFERE WITH PLAN TO ELIMINATE DUPLICATE ELECTIONS BY KEEPING THE LATEST MONTH
+
+Missing months are:
+1. Georgia 2000 House Distr "29." - just 1 election
+2. Mississippi 1976 Senate Distr "44." - just 1 election
+3. New Mexico 2006 House Distr "68." - just 1 election
+4. Washington 1981 House Distr 121 - just 1 election
+5. Washington 1981 House Distr 21 - just 1 election
+6. Washington 1981 House Distr 151 - just 1 election
+7. Washington 1981 Senate Distr "15." - just 1 election
+
+Figure out if these are instances in which we have more than 1 election per year - if not, great, plug in month=13 just to know that you've edited the original data and document properly. If yes, investigate further.
+
+
+2/14/22
+
+Issues with votes
+
+1. nr_winners!=total(winner) - often because the same candidate shows up twice within an election, and their votes are different for different rows
+
+Q FOR IAN: Should we add up the votes for candidates whose names appear multiple times? Or should I take the max value?
+
+2. 2% of total obs we have issues where the votes of candidates running don't sum up to total votes for that election
+
+3. We don't know how trustworthy this variable winner is [how to navigate the fact that sometimes we don't have either cand_vote or total_votes (in order to calc whether someone won) or we don't trust winner]
+
+4. Question of candidates breaking term limits, Peter Rios case seems like it could be that either they break senate limit or the var legbranch has measurement error? (given district id is the same as the house election later on)
+
+
+2/16/2022
+
+ISSUES with timeline - Louisiana's terms are 4 yrs long in both house and senate; the first elections we observe take place in 1967, but then again in 1968? for the same districts!! Special Elections 

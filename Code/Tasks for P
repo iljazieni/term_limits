@@ -1,11 +1,21 @@
+2/2/22 QUESTIONS
+
+1. How are elections that don't determine a sitting legislator different from those that do *for our purposes*? Why would we keep them in our dataset? If they don't determine a sitting legislator, doesn't that mean that those candidates don't serve in office and that 'win' doesn't count towards their term limit?
+2. Why is it that there are Senate elections in the same district for FL, MT, OH that are 2 years apart when the senate term is 4 years? [these states are just an example; write code to check how often this happens for both house and senate]
+3. Issue with district identifiers for creating unique election_id  
+
+
 
 1. PRIMARY RESEARCH
 
 1. How many different elections could there be in the same state-year-month-legbranch-district? [ex. Alabama-1970-11-0-12 has 7 different elections - is there an issue with the data? You can use variable "red_flag" in elections_clean.dta to check this]
 
-- The number of elections would depend on the type of district. For example, Alabama-1970-11-0-12 is technically just one election for the 12th district of the Alabama House of Representatives. However, because the 12th district is a multi-member district (MMD), there are several posts (seats) in the 12th district. Numbers under "V10b" correspond to the post/seat for which the corresponding candidate has run.
+- The number of elections would depend on the type of district. For example, Alabama-1970-11-0-12 is technically just one election for the 12th district of the Alabama House of Representatives. However, because the 12th district is a multi-member district (MMD), there are several posts (seats) in the 12th district. Numbers under "V10b" correspond to the post/seat for which the corresponding candidate has run. - Show issues with district variables
 
-- If we need a unique election identifier, perhaps state-year-month-legbranch-district-V10A-V10B-V10C-V10D might work better. It's a long string but it will be unique. V10 and subs would correspond to to the election type (single-member, multi-member, etc.)
+
+
+
+- If we need a unique election identifier, perhaps state-year-month-legbranch-district-V10A-V10B-V10C-V10D might work better. It's a long string but it will be unique. V10 and subs would correspond to the election type (single-member, multi-member, etc.)
 
 2. Have there ever been any term limiting legislations enacted in any state before our dataset starts?
 
@@ -29,7 +39,7 @@
 
 | State | Year Enacted | Limit Years House | Year of Impact House (data) | Year of Impact (calc'd using LimitTermsHouse) |
 | ----- | ------------ | ----------------- | --------------------------- | --------------------------------------------- |
-| ME    | 1993         | 8                 | 1996 (correct; retroactive) | 2001                                          | 
+| ME    | 1993         | 8                 | 1996 (correct; retroactive) | 2001                                          |
 | MO    | 1992         | 8                 | 2002 (correct; delayed)     | 2000                                          |
 | NV    | 1996         | 12                | 2010 (correct; delayed)     | 2008                                          |
 | OK    | 1990         | 12                | 2004 (correct; delayed)     | 2002                                          |
