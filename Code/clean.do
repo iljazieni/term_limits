@@ -35,57 +35,61 @@ label val legbranch branches
 // Issue with missing month values for 11 observations - I replace all missing values for month with value 13 to avoid issues with . > largest values
 replace month=13 if month==.
 
+split distr_id, parse(" ") limit(1) gen(district)
+
 // Clean up district variable
-replace distr_id=subinstr(distr_id, " ","",.)
-replace distr_id=subinstr(distr_id, "-","",.)
-replace distr_id=subinstr(distr_id, ".", "999", .)
-replace distr_id=subinstr(distr_id, "A", "1", .)
-replace distr_id=subinstr(distr_id, "B", "2", .)
-replace distr_id=subinstr(distr_id, "C", "3", .)
-replace distr_id=subinstr(distr_id, "D", "4", .)
-replace distr_id=subinstr(distr_id, "E", "5", .)
-replace distr_id=subinstr(distr_id, "F", "6", .)
-replace distr_id=subinstr(distr_id, "G", "7", .)
-replace distr_id=subinstr(distr_id, "H", "8", .)
-replace distr_id=subinstr(distr_id, "I", "9", .)
-replace distr_id=subinstr(distr_id, "J", "10", .)
-replace distr_id=subinstr(distr_id, "K", "11", .)
-replace distr_id=subinstr(distr_id, "L", "12", .)
-replace distr_id=subinstr(distr_id, "M", "13", .)
-replace distr_id=subinstr(distr_id, "N", "14", .)
-replace distr_id=subinstr(distr_id, "O", "15", .)
-replace distr_id=subinstr(distr_id, "P", "16", .)
-replace distr_id=subinstr(distr_id, "Q", "17", .)
-replace distr_id=subinstr(distr_id, "R", "18", .)
-replace distr_id=subinstr(distr_id, "S", "19", .)
-replace distr_id=subinstr(distr_id, "T", "20", .)
-replace distr_id=subinstr(distr_id, "U", "21", .)
-replace distr_id=subinstr(distr_id, "V", "22", .)
-replace distr_id=subinstr(distr_id, "W", "23", .)
-replace distr_id=subinstr(distr_id, "X", "24", .)
-replace distr_id=subinstr(distr_id, "Y", "25", .)
-replace distr_id=subinstr(distr_id, "Z", "26", .)
+replace district=subinstr(district, " ","",.)
+replace district=subinstr(district, "-","",.)
+replace district=subinstr(district, ".", "999", .)
+replace district=subinstr(district, "A", "1", .)
+replace district=subinstr(district, "B", "2", .)
+replace district=subinstr(district, "C", "3", .)
+replace district=subinstr(district, "D", "4", .)
+replace district=subinstr(district, "E", "5", .)
+replace district=subinstr(district, "F", "6", .)
+replace district=subinstr(district, "G", "7", .)
+replace district=subinstr(district, "H", "8", .)
+replace district=subinstr(district, "I", "9", .)
+replace district=subinstr(district, "J", "10", .)
+replace district=subinstr(district, "K", "11", .)
+replace district=subinstr(district, "L", "12", .)
+replace district=subinstr(district, "M", "13", .)
+replace district=subinstr(district, "N", "14", .)
+replace district=subinstr(district, "O", "15", .)
+replace district=subinstr(district, "P", "16", .)
+replace district=subinstr(district, "Q", "17", .)
+replace district=subinstr(district, "R", "18", .)
+replace district=subinstr(district, "S", "19", .)
+replace district=subinstr(district, "T", "20", .)
+replace district=subinstr(district, "U", "21", .)
+replace district=subinstr(district, "V", "22", .)
+replace district=subinstr(district, "W", "23", .)
+replace district=subinstr(district, "X", "24", .)
+replace district=subinstr(district, "Y", "25", .)
+replace district=subinstr(district, "Z", "26", .)
 
-destring distr_id, replace
+destring district, replace
 
-// Construct an election identifier
-bys state year month legbranch distr_id nr_cand total_votes: gen election_id=_n if _n==1
+decode distrtype, gen(dis_type)
+replace dis_type=substr(dis_type, 1,6)
+replace dis_type=ustrlower(dis_type)
+bys state year month legbranch district nr_cand total_votes: gen election_id=_n if _n==1
 replace election_id=sum(election_id)
 // double check that this is right by adding votes of each candidate within an election and making sure they equal total_votes
 
 // keeping the last election of the year instead of dropping sitting_legislator==0
-bys state year legbranch distr_id: egen latest_month=max(month)
-bys state year legbranch distr_id: keep if month==latest_month
+bys state year legbranch district: egen latest_month=max(month)
+bys state year legbranch district: keep if month==latest_month
 
-// making sure we only have 1 election per state-year-legbranch-distr_id
-unique election_id, by(state year legbranch distr_id) gen(annual_check)
-bys state year legbranch distr_id: egen tag=total(annual_check)
+// making sure we only have 1 election per state-year-legbranch-district
+unique election_id, by(state year legbranch district) gen(annual_check)
+bys state year legbranch district: egen tag=total(annual_check)
 
 drop if sitting_legislator==0 & tag!=1
 
 // deal with only few obs left that can't be taken care of neither via sitting_legislator==0 or the latest_month var, i.e., they're different elections in the same month both determining sitting_legislator
-unique election_id, by(state year legbranch distr_id) gen(final_check)
-bys state year legbranch distr_id: egen tag1=total(final_check)
+unique election_id, by(state year legbranch district) gen(final_check)
+bys state year legbranch district: egen tag1=total(final_check)
 drop if tag1==2 & election_type=="G"  // taking care of only keeping the runoff election that corresponds to this general election duplicate
 
 
@@ -105,21 +109,20 @@ replace cand_vote=cand_votes if cand_vote!=cand_votes
 drop if candidate_fullname=="SCATTERING" | candidate_fullname=="WRITEIN"
 
 // drop all the auxilliary vars created to clean
-drop latest_month annual_check tag final_check tag1 winners votes_total cand_dupl cand_votes V03 V04 V10A V10B V10C V10D V10 distr distr_nr V38 V39 V40 V41 V42 V56 V57 V58
+cap drop latest_month annual_check tag final_check tag1 winners votes_total cand_dupl cand_votes V03 V04 V10A V10B V10C V10D V10 distr distr_nr V38 V39 V40 V41 V42 V56 V57 V58
 
 // save as new dataset
 cap save "${root}/elections_clean.dta", replace
 }
 
+
 if `limits'==1 {
 
 import excel "C:\Users\ei87\Dropbox (YLS)\Term Limits\Dataset\DS0001\State_Leg_Term.xlsx", firstrow clear
-
-drop State
 destring RoundsDisqualifiedSenate YearofImpactHouse RoundsDisqualifiedHouse LimitTermsHouse TermLengthHouse LimitYearsHouse, replace
 rename *, lower
-encode abbreviation, gen(state)
-drop abbreviation
+encode state, gen(new)
+rename (state new) (old_state state)
 
 // save as new dataset
 cap save "${root}/term_limits_clean.dta", replace

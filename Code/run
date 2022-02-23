@@ -12,3 +12,6 @@ sort state year month legbranch distr_id
 - Browse
 
 br state year month legbranch distr_id election_id winner incumbent candidate_fullname total_votes cand_vote nr_cand if
+
+
+br year distr_id candidate_fullname winner incumbent term_limited limited_seat terms_won max_year seat
