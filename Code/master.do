@@ -21,13 +21,16 @@ clear all
 // Switches
 
 local clean           0
-local merge           1
+local merge           0
+local audit           0
 local analysis        1
 
 
 
-if `clean'==1  do "${code}/clean.do"
+if `clean'==1         do "${code}/clean.do"
 
-if `merge'==1 do "${code}/merge.do"
+if `merge'==1         do "${code}/merge.do"
 
-if `analysis'==1  do "${code}/analysis.do"
+if `audit'==1         do "${code}/audit.do"
+
+if `analysis'==1      do "${code}/analysis.do"

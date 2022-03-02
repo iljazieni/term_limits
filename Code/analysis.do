@@ -13,8 +13,8 @@ Output: coefficients of interest
 
 
 local descriptive       0
-local nepotism          1
-
+local nepotism          0
+local alt_nep           1
 
 if `descriptive'==1 {
 
@@ -54,6 +54,32 @@ if `nepotism'==1      {
 
 use "${root}/term_limited_elections.dta", clear
 keep if limited_seat==1 | term_limited==1
-bys unique_id: gen nep=1 if cand_surname==cand_surname[_n-1] & cand_name!=cand_name[_n-1]   //  AUDIT
+sort unique_id year
+by unique_id: gen nep_wrong=1 if cand_surname==cand_surname[_n-1] & cand_name!=cand_name[_n-1]   // ISSUE HERE IS THAT NAME DIFFERS FOR SAME PERSON (JAMES JIM)
+by unique_id: gen nep=1 if cand_surname==cand_surname[_n-1] & limited_seat==1
+by unique_id: gen check1=1 if nep==1 & candidate_fullname==candidate_fullname[_n-1] // ADDRESS
+gen check2=1 if term_limited==1 & limited_seat==1
 save "${root}/nepotism.dta", replace
+
+}
+
+if `alt_nep' ==1 {
+
+    clear all
+    use "${root}/term_limited_elections_audit.dta", clear
+
+duplicates drop state legbranch distr_id new_district year seat candidate_fullname, force 
+
+  egen unique_distr=concat(state legbranch new_district)
+  destring unique_distr, replace
+
+  keep if limited_seat==1 | term_limited==1
+  sort unique_distr year
+  by unique_distr: gen nep_wrong=1 if cand_surname==cand_surname[_n-1] & cand_name!=cand_name[_n-1]   // ISSUE HERE IS THAT NAME DIFFERS FOR SAME PERSON (JAMES JIM)
+  by unique_distr: gen nep=1 if cand_surname==cand_surname[_n-1] & limited_seat==1
+  by unique_distr: gen check1=1 if nep==1 & candidate_fullname==candidate_fullname[_n-1] // ADDRESS
+  gen check2=1 if term_limited==1 & limited_seat==1
+  save "${root}/nepotism_audit.dta", replace
+
+
 }

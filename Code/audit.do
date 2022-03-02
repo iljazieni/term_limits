@@ -1,23 +1,8 @@
 clear all
 
-local merge           1
-local algo            1
+local algo            0
 local append          1
 local clean_up        0
-
-if `merge'==1 {
-
-use "${root}/elections_clean.dta", clear
-sort state year month
-merge m:1 state using "${root}/term_limits_clean.dta"
-
-// CONCATENATE STATE-LEGBRANCH-DISTRICT
-egen unique_id=concat(state legbranch district)
-destring unique_id, replace
-
-cap save "${root}/master_dataset.dta", replace
-}
-
 
 if `algo'==1 {
 
@@ -29,7 +14,9 @@ use "${root}/master_dataset.dta", clear
 // AZ HOUSE
 keep if state_abrv=="AZ" & legbranch==1
 
- levelsof unique_id, local(sep)
+egen new_district=group(distr_id)
+
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -39,7 +26,7 @@ keep if state_abrv=="AZ" & legbranch==1
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -60,9 +47,9 @@ keep if state_abrv=="AZ" & legbranch==1
   replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
+  save "${root}/test2/test_az_1_`k'.dta", replace
 
-// sleep 100
+sleep 100
 restore
 
 }
@@ -73,8 +60,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="AZ" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -84,7 +71,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -105,9 +92,9 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
+  save "${root}/test2/test_az_0_`k'.dta", replace
 
-// sleep 100
+sleep 100
 restore
 
 }
@@ -119,8 +106,8 @@ use "${root}/master_dataset.dta", clear
 //SD HOUSE
 keep if state_abrv=="SD" & legbranch==1
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -130,7 +117,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -151,8 +138,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_sd_1_`k'.dta", replace
+sleep 100
 restore
 
 }
@@ -163,8 +150,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="SD" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -174,7 +161,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -195,8 +182,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_sd_0_`k'.dta", replace
+sleep 100
 restore
 
 }
@@ -209,8 +196,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="FL" & legbranch==1 // split House and Senate bc terms limited are different
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -220,7 +207,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -241,8 +228,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_fl_1_`k'.dta", replace
+sleep 100
 restore
 
 }
@@ -253,8 +240,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="FL" & legbranch==0  // split House and Senate bc terms limited are different
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -264,7 +251,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -285,8 +272,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_fl_0_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -298,8 +285,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="OH" & legbranch==1 // split House and Senate bc terms limited are different
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -309,7 +296,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -330,8 +317,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_oh_1_`k'.dta", replace
+sleep 100
 restore
 
 }
@@ -342,8 +329,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="OH" & legbranch==0  // split House and Senate bc terms limited are different
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -353,7 +340,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -374,8 +361,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_oh_0_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -386,8 +373,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="MT" & legbranch==1 // split House and Senate bc terms limited are different
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -397,7 +384,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -418,8 +405,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_mt_1_`k'.dta", replace
+sleep 100
 restore
 
 }
@@ -430,8 +417,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="MT" & legbranch==0  // split House and Senate bc terms limited are different
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -441,7 +428,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -462,8 +449,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_mt_0_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -475,8 +462,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="CO" & legbranch==1 // split House and Senate bc terms limited are different
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -486,7 +473,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1990
+  keep if new_district==`k' & year>=1990
 
   cap assert _N == 0
   if _rc == 0 {
@@ -507,8 +494,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_co_1_`k'.dta", replace
+sleep 100
 restore
 
 }
@@ -519,8 +506,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="CO" & legbranch==0  // split House and Senate bc terms limited are different
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -530,7 +517,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1990
+  keep if new_district==`k' & year>=1990
 
   cap assert _N == 0
   if _rc == 0 {
@@ -551,19 +538,20 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_co_0_`k'.dta", replace
+sleep 100
 restore
 }
 
 // LOUISIANA - same for both branches - 3 terms of 4 years each | enacted 1995
+// LA HOUSE
 clear all
 use "${root}/master_dataset.dta", clear
 
-keep if state_abrv=="LA"
+keep if state_abrv=="LA" & legbranch==1
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -573,7 +561,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1995
+  keep if new_district==`k' & year>=1995
 
   cap assert _N == 0
   if _rc == 0 {
@@ -594,19 +582,64 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
- // sleep 100
+  save "${root}/test2/test_la_1_`k'.dta", replace
+ sleep 100
 restore
 }
 
-// MAINE - 4 terms max of 2 years each - enacted 1993 - impact 1996 (retroactive)
+// LA SENATE
 clear all
 use "${root}/master_dataset.dta", clear
 
-keep if state_abrv=="ME"
+keep if state_abrv=="LA" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
+
+  foreach k in `sep' {
+
+  cap preserve
+
+  keep if winner==1 // | incumbent==1==1
+  gen term_limited=.
+  gen limited_seat=.
+
+  keep if new_district==`k' & year>=1995
+
+  cap assert _N == 0
+  if _rc == 0 {
+      set obs 1
+      gen data="empty"
+  }
+
+  bys candidate_id: egen terms_won=total(winner)
+  egen max_year = max(year), by(candidate_id)
+  by candidate_id: replace terms_won=. if year!=max_year
+  sort candidate_id year
+  replace term_limited=1 if terms_won==3
+  replace term_limited=2 if terms_won>3 & terms_won!=.
+  replace term_limited=0 if term_limited==.
+  cap drop seat
+  bys year: gen seat=_n
+   sort seat year
+    replace limited_seat=1 if term_limited[_n-1]==1
+  replace limited_seat=0 if limited_seat==.
+
+  save "${root}/test2/test_la_0_`k'.dta", replace
+ sleep 100
+restore
+}
+
+
+// MAINE - 4 terms max of 2 years each - enacted 1993 - impact 1996 (retroactive)
+// MAINE HOUSE
+clear all
+use "${root}/master_dataset.dta", clear
+
+keep if state_abrv=="ME" & legbranch==1
+
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -616,7 +649,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1988
+  keep if new_district==`k' & year>=1988
 
   cap assert _N == 0
   if _rc == 0 {
@@ -637,20 +670,19 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_me_1_`k'.dta", replace
+sleep 100
 restore
 }
 
-
-// NEBRASKA UNICAMERAL
+// MAINE SENATE
 clear all
 use "${root}/master_dataset.dta", clear
 
-keep if state_abrv=="NE"
+keep if state_abrv=="ME" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -660,7 +692,50 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1998
+  keep if new_district==`k' & year>=1988
+
+  cap assert _N == 0
+  if _rc == 0 {
+      set obs 1
+      gen data="empty"
+  }
+
+  bys candidate_id: egen terms_won=total(winner)
+  egen max_year = max(year), by(candidate_id)
+  by candidate_id: replace terms_won=. if year!=max_year
+  sort candidate_id year
+  replace term_limited=1 if terms_won==4
+  replace term_limited=2 if terms_won>4 & terms_won!=.
+  replace term_limited=0 if term_limited==.
+  cap drop seat
+  bys year: gen seat=_n
+   sort seat year
+    replace limited_seat=1 if term_limited[_n-1]==1
+  replace limited_seat=0 if limited_seat==.
+
+  save "${root}/test2/test_me_0_`k'.dta", replace
+sleep 100
+restore
+}
+
+// NEBRASKA UNICAMERAL
+clear all
+use "${root}/master_dataset.dta", clear
+
+keep if state_abrv=="NE"
+
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
+
+  foreach k in `sep' {
+
+  cap preserve
+
+  keep if winner==1  // | incumbent==1==1
+  gen term_limited=.
+  gen limited_seat=.
+
+  keep if new_district==`k' & year>=1998
 
   cap assert _N == 0
   if _rc == 0 {
@@ -681,8 +756,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_ne_`k'.dta", replace
+sleep 100
 restore
 
 }
@@ -694,8 +769,8 @@ use "${root}/master_dataset.dta", clear
 // AR House
 keep if state_abrv=="AR" & legbranch==1
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -705,7 +780,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -726,8 +801,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_ar_1_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -737,8 +812,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="AR" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -748,7 +823,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -769,8 +844,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_ar_0_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -782,8 +857,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="CA" & legbranch==1
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -793,7 +868,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1990
+  keep if new_district==`k' & year>=1990
 
   cap assert _N == 0
   if _rc == 0 {
@@ -814,8 +889,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_ca_1_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -826,8 +901,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="CA" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -837,7 +912,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k'  & year>=1990
+  keep if new_district==`k'  & year>=1990
 
   cap assert _N == 0
   if _rc == 0 {
@@ -858,8 +933,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_ca_0_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -871,8 +946,8 @@ use "${root}/master_dataset.dta", clear
 // MI HOUSE
 keep if state_abrv=="MI" & legbranch==1
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -882,7 +957,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -903,8 +978,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_mi_1_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -915,8 +990,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="MI" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -926,7 +1001,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1994
+  keep if new_district==`k' & year>=1994
 
   cap assert _N == 0
   if _rc == 0 {
@@ -947,8 +1022,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_mi_0_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -960,8 +1035,8 @@ use "${root}/master_dataset.dta", clear
 // MO HOUSE
 keep if state_abrv=="MO" & legbranch==1
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -971,7 +1046,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1994
+  keep if new_district==`k' & year>=1994
 
   cap assert _N == 0
   if _rc == 0 {
@@ -992,8 +1067,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_mo_1_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -1003,8 +1078,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="MO" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -1014,7 +1089,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1994
+  keep if new_district==`k' & year>=1994
 
   cap assert _N == 0
   if _rc == 0 {
@@ -1035,8 +1110,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_mo_0_`k'.dta", replace
+sleep 100
 restore
 }
 // NEVADA
@@ -1047,8 +1122,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="NV" & legbranch==1
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -1058,7 +1133,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1998
+  keep if new_district==`k' & year>=1998
 
   cap assert _N == 0
   if _rc == 0 {
@@ -1079,8 +1154,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_nv_1_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -1090,8 +1165,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="NV" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -1101,7 +1176,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k'  & year>=1998
+  keep if new_district==`k'  & year>=1998
 
   cap assert _N == 0
   if _rc == 0 {
@@ -1122,8 +1197,8 @@ cap
   replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_nv_0_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -1135,8 +1210,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="OK" & legbranch==1
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -1146,7 +1221,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k' & year>=1992
+  keep if new_district==`k' & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -1167,8 +1242,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_ok_1_`k'.dta", replace
+sleep 100
 restore
 }
 
@@ -1179,8 +1254,8 @@ use "${root}/master_dataset.dta", clear
 
 keep if state_abrv=="OK" & legbranch==0
 
-cap
- levelsof unique_id, local(sep)
+cap egen new_district=group(distr_id)
+levelsof new_district, local(sep)
 
   foreach k in `sep' {
 
@@ -1190,7 +1265,7 @@ cap
   gen term_limited=.
   gen limited_seat=.
 
-  keep if unique_id==`k'  & year>=1992
+  keep if new_district==`k'  & year>=1992
 
   cap assert _N == 0
   if _rc == 0 {
@@ -1211,8 +1286,8 @@ cap
     replace limited_seat=1 if term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/test`k'.dta", replace
-// sleep 100
+  save "${root}/test2/test_ok_0_`k'.dta", replace
+sleep 100
 restore
 
 }
@@ -1246,7 +1321,7 @@ keep if state_abrv=="OK" & year>=1992
   replace limited_seat=1 if term_limited==0 & term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test/oklahoma.dta", replace
+  save "${root}/test2/oklahoma.dta", replace
 
 }
 
@@ -1254,17 +1329,18 @@ keep if state_abrv=="OK" & year>=1992
 
 if `append' == 1 {
 
-    cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test"
+    cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test2"
     clear
     append using `: dir . files "*.dta"'
     cap drop data house1 house2 sen1 sen2
-    save "${root}/term_limited_elections.dta", replace
+    duplicates drop state legbranch new_district year candidate_fullname candidate_id, force
+    save "${root}/term_limited_elections_audit.dta", replace
 }
 
 
 if `clean_up'==1 {
 
-cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test"
+cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test2"
 
 local datafiles: dir "`workdir'" files "*.dta"
 
