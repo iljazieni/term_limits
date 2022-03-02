@@ -68,7 +68,7 @@ if `alt_nep' ==1 {
     clear all
     use "${root}/term_limited_elections_audit.dta", clear
 
-duplicates drop state legbranch distr_id new_district year seat candidate_fullname, force 
+ duplicates drop state legbranch distr_id new_district year seat candidate_fullname, force 
 
   egen unique_distr=concat(state legbranch new_district)
   destring unique_distr, replace
