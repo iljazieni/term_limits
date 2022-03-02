@@ -9,14 +9,11 @@ Output: coefficients of interest
 
 */
 
-
 // Step 1: Identify candidates that are term limited and can't run and compare how often we see another candidate with the same last name relative to when a candidate voluntarily decides not to run
 
 
 local descriptive       0
-local append1           0
-local consecutive       0
-
+local nepotism          1
 
 
 if `descriptive'==1 {
@@ -53,14 +50,10 @@ forval j=0/1 {
 
 }
 
+if `nepotism'==1      {
 
-if `append1'==1 {
-
-  cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\temp"
-  clear
-  append using `: dir . files "*.dta"'
-  save "${root}/descriptive.dta", replace
-
-  export excel state legbranch nep using "${root}/descriptive.xlsx" , sheet("run_gaps", replace) firstrow()
-
+use "${root}/term_limited_elections.dta", clear
+keep if limited_seat==1 | term_limited==1
+bys unique_id: gen nep=1 if cand_surname==cand_surname[_n-1] & cand_name!=cand_name[_n-1]   //  AUDIT
+save "${root}/nepotism.dta", replace
 }

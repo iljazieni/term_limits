@@ -1,9 +1,9 @@
+clear all
+
 local merge           0
 local algo            1
 local append          1
-local clean_up        0
-local test            0
-
+local clean_up        1
 
 if `merge'==1 {
 
@@ -34,7 +34,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1   // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -80,7 +80,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -125,7 +125,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -168,7 +168,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -212,7 +212,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -255,7 +255,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -300,7 +300,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -343,7 +343,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -387,7 +387,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -430,7 +430,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -472,7 +472,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1 // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -514,7 +514,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -557,7 +557,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -601,7 +601,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1 // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -643,7 +643,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -687,7 +687,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -730,7 +730,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1 // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -760,7 +760,7 @@ levelsof unique_id, local(sep)
 restore
 }
 
-
+*/
 // MICHIGAN - different across branches
 clear all
 use "${root}/master_dataset.dta", clear
@@ -774,7 +774,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -809,7 +809,7 @@ restore
 clear all
 use "${root}/master_dataset.dta", clear
 
-keep if state_abrv=="MI" | state_abrv=="MO" & legbranch==0
+keep if state_abrv=="MI" & legbranch==0
 
 levelsof unique_id, local(sep)
 
@@ -817,7 +817,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -848,7 +848,7 @@ restore
 }
 
 
-// MISSOURI - different across branches
+// MISSOURI
 clear all
 use "${root}/master_dataset.dta", clear
 
@@ -861,7 +861,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -891,6 +891,47 @@ levelsof unique_id, local(sep)
 restore
 }
 
+// MO SENATE
+clear all
+use "${root}/master_dataset.dta", clear
+
+keep if state_abrv=="MO" & legbranch==0
+
+levelsof unique_id, local(sep)
+
+  foreach k in `sep' {
+
+  cap preserve
+
+  keep if winner==1  // | incumbent==1==1
+  gen term_limited=.
+  gen limited_seat=.
+
+  keep if unique_id==`k' & year>=1994
+
+  cap assert _N == 0
+  if _rc == 0 {
+      set obs 1
+      gen data="empty"
+  }
+
+  bys candidate_id: egen terms_won=total(winner)
+  egen max_year = max(year), by(candidate_id)
+  by candidate_id: replace terms_won=. if year!=max_year
+  sort candidate_id year
+  replace term_limited=1 if terms_won==2
+  replace term_limited=2 if terms_won>2 & terms_won!=.
+  replace term_limited=0 if term_limited==.
+  cap drop seat
+  bys district year: gen seat=_n
+  sort year
+  bys seat: replace limited_seat=1 if term_limited[_n-1]==1
+  replace limited_seat=0 if limited_seat==.
+
+  save "${root}/test/test`k'.dta", replace
+
+restore
+}
 // NEVADA
 
 // NV HOUSE
@@ -905,7 +946,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -935,7 +976,6 @@ levelsof unique_id, local(sep)
 restore
 }
 
-
 // NV SENATE
 clear all
 use "${root}/master_dataset.dta", clear
@@ -948,7 +988,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -992,7 +1032,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -1035,7 +1075,7 @@ levelsof unique_id, local(sep)
 
   cap preserve
 
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
   gen term_limited=.
   gen limited_seat=.
 
@@ -1063,6 +1103,7 @@ levelsof unique_id, local(sep)
   save "${root}/test/test`k'.dta", replace
 
 restore
+
 }
 
 // ISSUE IS THAT THEY'RE TERM LIMITED IN MULTIPLE WAYS - COULD BE BC OF JUST HOUSE, JUST SENATE, OR BOTH
@@ -1073,7 +1114,7 @@ keep if state_abrv=="OK" & year>=1992
 
   gen term_limited=.
   gen limited_seat=.
-  keep if winner==1 | incumbent==1
+  keep if winner==1  // | incumbent==1==1
 
   egen terms_won=total(winner), by(candidate_id legbranch)
   egen max_year = max(year), by(candidate_id)
@@ -1105,7 +1146,8 @@ if `append' == 1 {
     cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test"
     clear
     append using `: dir . files "*.dta"'
-    save "${root}/answers.dta", replace
+    drop data house1 house2 sen1 sen2
+    save "${root}/term_limited_elections.dta", replace
 }
 
 

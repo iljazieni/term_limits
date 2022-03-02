@@ -15,7 +15,7 @@ Output2: term_limits_clean
 clear all
 
 local elections       1
-local limits          0
+local limits          1
 
 
 if `elections' == 1 {

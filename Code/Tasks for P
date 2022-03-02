@@ -2,7 +2,7 @@
 
 1. How are elections that don't determine a sitting legislator different from those that do *for our purposes*? Why would we keep them in our dataset? If they don't determine a sitting legislator, doesn't that mean that those candidates don't serve in office and that 'win' doesn't count towards their term limit?
 2. Why is it that there are Senate elections in the same district for FL, MT, OH that are 2 years apart when the senate term is 4 years? [these states are just an example; write code to check how often this happens for both house and senate]
-3. Issue with district identifiers for creating unique election_id  
+3. Issue with district identifiers for creating unique election_id
 
 
 
@@ -73,3 +73,8 @@
 3. TECHNICAL/CODING
 
 - Investigate whether the issue with number of candidates variables (the fact that nr_cand!=nr_dems + nr_reps) could be caused by write-in candidates not being counted for this variable (nr_cand)
+
+
+3/2/2022
+
+AUDITING ALGORITHM THAT GENERATED THE FOLLOWING VARIABLES: term_limited, limited_seat, nep 
