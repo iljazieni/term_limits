@@ -22,8 +22,8 @@ clear all
 
 local clean           0
 local merge           0
-local audit           0
-local analysis        1
+local algorithm       1
+local analysis        0
 
 
 
@@ -31,6 +31,6 @@ if `clean'==1         do "${code}/clean.do"
 
 if `merge'==1         do "${code}/merge.do"
 
-if `audit'==1         do "${code}/audit.do"
+if `algorithm'==1         do "${code}/algorithm.do"
 
 if `analysis'==1      do "${code}/analysis.do"

@@ -183,6 +183,10 @@ TO DO - FIX NEPOTISM MEASURE
 
 - REVISIT "ABLESER" TERM BREAKING
 
-- TO DO: REVISIT term_limited==2 Cases - limit breaking
+- TO DO: REVISIT term_limited==2 Cases - limit breaking - CALIFORNIA'S BACA, JOE
 
-- Deal with check1=1 in nepotism_audit.dta - FIGURE OUT WHERE DUPLICATES COME FROM - not in master_dataset but in term_limited_elections 
+- florida's senate has both a 1992 & 1994 election but a 4 yr term length
+
+- Deal with check1=1 in nepotism_audit.dta - FIGURE OUT WHERE DUPLICATES COME FROM - not in master_dataset but in term_limited_elections
+
+OLD WAY OF CONSTRUCTING LIMITED SEAT:   replace limited_seat=1 if term_limited[_n-1]==1

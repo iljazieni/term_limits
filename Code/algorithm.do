@@ -1,8 +1,10 @@
 clear all
 
-local algo            0
+local algo            1
 local append          1
-local clean_up        0
+local clean_up        1
+local nepotism        1
+
 
 if `algo'==1 {
 
@@ -44,10 +46,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
   sort seat year
-  replace limited_seat=1 if term_limited[_n-1]==1
+  replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_az_1_`k'.dta", replace
+  save "${root}/test/test_az_1_`k'.dta", replace
 
 sleep 100
 restore
@@ -89,10 +91,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_az_0_`k'.dta", replace
+  save "${root}/test/test_az_0_`k'.dta", replace
 
 sleep 100
 restore
@@ -135,10 +137,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_sd_1_`k'.dta", replace
+  save "${root}/test/test_sd_1_`k'.dta", replace
 sleep 100
 restore
 
@@ -179,10 +181,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_sd_0_`k'.dta", replace
+  save "${root}/test/test_sd_0_`k'.dta", replace
 sleep 100
 restore
 
@@ -224,11 +226,11 @@ levelsof new_district, local(sep)
   replace term_limited=0 if term_limited==.
   cap drop seat
   bys year: gen seat=_n
-   sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+  sort seat year
+  replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_fl_1_`k'.dta", replace
+  save "${root}/test/test_fl_1_`k'.dta", replace
 sleep 100
 restore
 
@@ -269,10 +271,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_fl_0_`k'.dta", replace
+  save "${root}/test/test_fl_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -314,10 +316,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_oh_1_`k'.dta", replace
+  save "${root}/test/test_oh_1_`k'.dta", replace
 sleep 100
 restore
 
@@ -358,10 +360,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_oh_0_`k'.dta", replace
+  save "${root}/test/test_oh_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -402,10 +404,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_mt_1_`k'.dta", replace
+  save "${root}/test/test_mt_1_`k'.dta", replace
 sleep 100
 restore
 
@@ -446,10 +448,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_mt_0_`k'.dta", replace
+  save "${root}/test/test_mt_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -491,10 +493,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_co_1_`k'.dta", replace
+  save "${root}/test/test_co_1_`k'.dta", replace
 sleep 100
 restore
 
@@ -535,10 +537,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_co_0_`k'.dta", replace
+  save "${root}/test/test_co_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -579,10 +581,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_la_1_`k'.dta", replace
+  save "${root}/test/test_la_1_`k'.dta", replace
  sleep 100
 restore
 }
@@ -622,10 +624,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_la_0_`k'.dta", replace
+  save "${root}/test/test_la_0_`k'.dta", replace
  sleep 100
 restore
 }
@@ -667,10 +669,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_me_1_`k'.dta", replace
+  save "${root}/test/test_me_1_`k'.dta", replace
 sleep 100
 restore
 }
@@ -710,10 +712,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_me_0_`k'.dta", replace
+  save "${root}/test/test_me_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -753,10 +755,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_ne_`k'.dta", replace
+  save "${root}/test/test_ne_`k'.dta", replace
 sleep 100
 restore
 
@@ -798,10 +800,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_ar_1_`k'.dta", replace
+  save "${root}/test/test_ar_1_`k'.dta", replace
 sleep 100
 restore
 }
@@ -841,10 +843,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_ar_0_`k'.dta", replace
+  save "${root}/test/test_ar_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -886,10 +888,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_ca_1_`k'.dta", replace
+  save "${root}/test/test_ca_1_`k'.dta", replace
 sleep 100
 restore
 }
@@ -930,10 +932,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_ca_0_`k'.dta", replace
+  save "${root}/test/test_ca_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -975,10 +977,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_mi_1_`k'.dta", replace
+  save "${root}/test/test_mi_1_`k'.dta", replace
 sleep 100
 restore
 }
@@ -1019,10 +1021,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_mi_0_`k'.dta", replace
+  save "${root}/test/test_mi_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -1064,10 +1066,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_mo_1_`k'.dta", replace
+  save "${root}/test/test_mo_1_`k'.dta", replace
 sleep 100
 restore
 }
@@ -1107,10 +1109,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_mo_0_`k'.dta", replace
+  save "${root}/test/test_mo_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -1151,10 +1153,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_nv_1_`k'.dta", replace
+  save "${root}/test/test_nv_1_`k'.dta", replace
 sleep 100
 restore
 }
@@ -1194,10 +1196,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-  replace limited_seat=1 if term_limited[_n-1]==1
+  replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_nv_0_`k'.dta", replace
+  save "${root}/test/test_nv_0_`k'.dta", replace
 sleep 100
 restore
 }
@@ -1239,10 +1241,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_ok_1_`k'.dta", replace
+  save "${root}/test/test_ok_1_`k'.dta", replace
 sleep 100
 restore
 }
@@ -1283,10 +1285,10 @@ levelsof new_district, local(sep)
   cap drop seat
   bys year: gen seat=_n
    sort seat year
-    replace limited_seat=1 if term_limited[_n-1]==1
+    replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/test_ok_0_`k'.dta", replace
+  save "${root}/test/test_ok_0_`k'.dta", replace
 sleep 100
 restore
 
@@ -1321,31 +1323,49 @@ keep if state_abrv=="OK" & year>=1992
   replace limited_seat=1 if term_limited==0 & term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
 
-  save "${root}/test2/oklahoma.dta", replace
+  save "${root}/test/oklahoma.dta", replace
 
 }
 
-// APPEND EVERYTHING ALL AT ONCE
 
 if `append' == 1 {
 
-    cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test2"
+    cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test"
     clear
     append using `: dir . files "*.dta"'
     cap drop data house1 house2 sen1 sen2
-    duplicates drop state legbranch new_district year candidate_fullname candidate_id, force
-    save "${root}/term_limited_elections_audit.dta", replace
+    save "${root}/term_limited_elections.dta", replace
 }
 
 
 if `clean_up'==1 {
 
-cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test2"
+cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test"
 
 local datafiles: dir "`workdir'" files "*.dta"
 
 foreach datafile of local datafiles {
         rm `datafile'
 }
+
+}
+
+
+if `nepotism' ==1 {
+
+    clear all
+    use "${root}/term_limited_elections.dta", clear
+
+  duplicates drop state legbranch distr_id new_district year seat candidate_fullname, force
+
+  egen unique_distr=concat(state legbranch new_district)
+  destring unique_distr, replace
+
+  keep if limited_seat==1 | term_limited!=0
+  sort unique_distr year
+  by unique_distr: gen nep=1 if cand_surname==cand_surname[_n-1] & limited_seat==1 & candidate_fullname!=candidate_fullname[_n-1]
+  replace nep=0 if nep==.
+
+  save "${root}/nepotism.dta", replace
 
 }
