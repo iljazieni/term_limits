@@ -79,7 +79,7 @@ tab state year
 3. Issues with Primary Research Task 1 (see notes in tasks for P)
 4. How do we want to deal with cases when candidate_fullname and total_votes are both missing?
 5. What we need is to have a clean dataset of elections - we need to only have elections during election years in a specific district, only have 1 per district per month per year per state
-6. Need to make decisions about the elections for which both candidate_fullname and total_votes are both missing (28)  
+6. Need to make decisions about the elections for which both candidate_fullname and total_votes are both missing (28)
 - Also: count if candidate_fullname=="" & winner==1 Result: 27 observation - Should we drop them?
 
 7. Also about 361 obs for which V43=identity // check when V43=winner
@@ -98,11 +98,11 @@ This happens in 2419/308,152 districts
 
 - check if sitting_legislator==0 in all/most of them - if so, they're special elections
 
-Comments to self:  
+Comments to self:
 
 - Don't care if a district is Multimember or not
 - I care about is uniquely identifying each election properly
-- I care about getting rid of "special" elections that don't determine a sitting legislator  
+- I care about getting rid of "special" elections that don't determine a sitting legislator
 
 
 2/3/22 PREP FOR MEETING WITH IAN
@@ -190,3 +190,17 @@ TO DO - FIX NEPOTISM MEASURE
 - Deal with check1=1 in nepotism_audit.dta - FIGURE OUT WHERE DUPLICATES COME FROM - not in master_dataset but in term_limited_elections
 
 OLD WAY OF CONSTRUCTING LIMITED SEAT:   replace limited_seat=1 if term_limited[_n-1]==1
+
+3/14/22 TO DO
+
+- PUT TOGETHER STUFF FROM ANALYSIS WITH TERM_LIMITED DATA TO BE ABLE TO RUN REGRESSIONS
+
+
+TERM-BREAKING CANDIDATES THAT ARE ISSUES:
+
+1. Florida's House New District 15 Candidate Sally Heyman
+
+
+3/22/2022
+
+The Stallworths in MICHIGAN's house 

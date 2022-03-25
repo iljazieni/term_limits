@@ -14,8 +14,8 @@ Output2: term_limits_clean
 
 clear all
 
-local elections       1
-local limits          1
+local elections       0
+local limits          0
 
 
 if `elections' == 1 {
@@ -73,6 +73,7 @@ destring district, replace
 decode distrtype, gen(dis_type)
 replace dis_type=substr(dis_type, 1,6)
 replace dis_type=ustrlower(dis_type)
+replace dis_type="multim" if dis_type=="floter"
 bys state year month legbranch district nr_cand total_votes: gen election_id=_n if _n==1
 replace election_id=sum(election_id)
 // double check that this is right by adding votes of each candidate within an election and making sure they equal total_votes
@@ -92,7 +93,6 @@ unique election_id, by(state year legbranch district) gen(final_check)
 bys state year legbranch district: egen tag1=total(final_check)
 drop if tag1==2 & election_type=="G"  // taking care of only keeping the runoff election that corresponds to this general election duplicate
 
-
 // SANITY CHECKS that the elections we're looking at all have a winner - that candidate votes add up to total votes - that the same candidate doesn't show up more than once in the same election
 
 bys election_id: egen winners=total(winner)
@@ -110,6 +110,7 @@ drop if candidate_fullname=="SCATTERING" | candidate_fullname=="WRITEIN"
 
 // drop all the auxilliary vars created to clean
 cap drop latest_month annual_check tag final_check tag1 winners votes_total cand_dupl cand_votes V03 V04 V10A V10B V10C V10D V10 distr distr_nr V38 V39 V40 V41 V42 V56 V57 V58
+
 
 // save as new dataset
 cap save "${root}/elections_clean.dta", replace
