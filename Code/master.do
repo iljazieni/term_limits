@@ -22,7 +22,7 @@ clear all
 
 local clean           0
 local merge           0
-local algorithm       0
+local algorithm       1
 local analysis        1
 
 

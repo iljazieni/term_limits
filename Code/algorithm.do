@@ -3,10 +3,9 @@ clear all
 local algo            0
 local append          0
 local clean_up        0
-local surname         0
-local stitch          1
-
-
+local single          0
+local multi           0
+local names           0
 
 if `algo'==1 {
 
@@ -51,10 +50,10 @@ levelsof new_district, local(sep)
   sort seat year
   replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-  gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+// gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_az_1_`k'.dta", replace
 
-sleep 100
+sleep 50
 restore
 
 }
@@ -98,10 +97,10 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+// gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_az_0_`k'.dta", replace
 
-sleep 100
+sleep 50
 restore
 
 }
@@ -145,9 +144,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_sd_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 
 }
@@ -190,9 +189,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_sd_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 
 }
@@ -237,9 +236,9 @@ levelsof new_district, local(sep)
   sort seat year
   replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_fl_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 
 }
@@ -282,9 +281,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_fl_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -328,9 +327,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_oh_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 
 }
@@ -373,9 +372,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_oh_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -418,9 +417,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_mt_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 
 }
@@ -463,9 +462,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_mt_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -509,9 +508,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_co_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 
 }
@@ -554,9 +553,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_co_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -599,9 +598,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_la_1_`k'.dta", replace
- sleep 100
+ sleep 50
 restore
 }
 
@@ -643,9 +642,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_la_0_`k'.dta", replace
- sleep 100
+ sleep 50
 restore
 }
 
@@ -689,9 +688,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_me_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -733,9 +732,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_me_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -777,9 +776,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_ne_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 
 }
@@ -823,9 +822,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_ar_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -867,9 +866,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_ar_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -913,9 +912,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_ca_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -958,9 +957,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_ca_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -1004,9 +1003,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_mi_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -1049,9 +1048,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_mi_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -1095,9 +1094,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_mo_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -1139,9 +1138,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_mo_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 // NEVADA
@@ -1184,9 +1183,9 @@ levelsof new_district, local(sep)
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_nv_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -1228,9 +1227,9 @@ levelsof new_district, local(sep)
    sort seat year
   replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_nv_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -1269,14 +1268,14 @@ levelsof new_district, local(sep)
   replace term_limited=2 if terms_won>6 & terms_won!=.
   replace term_limited=0 if term_limited==.
   cap drop seat
-    sort year cand_surname // order alphabetically
+  sort year cand_surname // order alphabetically
   bys year: gen seat=_n
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_ok_1_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 }
 
@@ -1314,14 +1313,14 @@ levelsof new_district, local(sep)
   replace term_limited=2 if terms_won>3 & terms_won!=.
   replace term_limited=0 if term_limited==.
   cap drop seat
-    sort year cand_surname // order alphabetically
+  sort year cand_surname // order alphabetically
   bys year: gen seat=_n
    sort seat year
     replace limited_seat=1 if term_limited[_n-1]!=0 & _n!=1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/test_ok_0_`k'.dta", replace
-sleep 100
+sleep 50
 restore
 
 }
@@ -1351,10 +1350,9 @@ keep if state_abrv=="OK" & year>=1992
   replace term_limited=0 if term_limited==.
 
   sort year cand_surname // order alphabetically
-  gen counter=_n
   replace limited_seat=1 if term_limited==0 & term_limited[_n-1]==1
   replace limited_seat=0 if limited_seat==.
-gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
+//gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
   save "${root}/test/oklahoma.dta", replace
 */
 }
@@ -1378,58 +1376,88 @@ cd "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\DS0001\test"
 local datafiles: dir "`workdir'" files "*.dta"
 
 foreach datafile of local datafiles {
-        rm `datafile'
+        rm `: dir . files "*.dta"'
 }
 
 }
 
 
-if `surname' ==1  {
+if `single'==1 {
 
-  clear all
-  use "${root}/master_dataset.dta", clear
+clear all
 
-  sort unique_id year
+use "${root}/master_dataset.dta", clear
 
-  levelsof unique_id, local(dis)
+keep if dis_type=="single"
 
-    foreach k in `dis' {
+/*VERSION 1 - WRONG
+sort counter winner
 
-      cap preserve
+// gen a var for lastname
+bys counter: gen winrv1=candidate_fullname if winner==1 & _n==_N & unique_id==unique_id[_n-1]
+gen prev_winnerv1=winrv1[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_winnerv1=prev_winnerv1[1] if unique_id==unique_id[_n-1]
 
-      keep if unique_id=="`k'"
+// gen a var for firstname
+bys counter: gen prev_sv1=cand_surname if winner==1 & _n==_N & unique_id==unique_id[_n-1]
+gen prev_sur_winnerv1=prev_sv1[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_sur_winnerv1=prev_sur_winnerv1[1] if unique_id==unique_id[_n-1]
 
-      cap assert _N == 0
-      if _rc == 0 {
-          set obs 1
-          gen data="empty"
-      }
-
-      bys year: gen seat=_n
-      sort seat year
-      gen same_lastname=1 if cand_surname==cand_surname[_n-1] & candidate_fullname!=candidate_fullname[_n-1]
-    cap save "${root}/test/n_`k'.dta", replace
-
-    sleep 100
-    restore
-                      }
-            }
-
-if `stitch'==1 {
-// append it all
-
-    cd "${root}\test"
-      clear
-      append using `: dir . files "*.dta"'
-      drop if unique_id==""
-
-save "${root}/lastname_data.dta", replace
-
-/*
-local datafiles: dir "`workdir'" files "*.dta"
-
-foreach datafile of local datafiles {
-        rm `datafile'
-}
+gen same_lastnamev1=1 if cand_surname==prev_sur_winnerv1 & candidate_fullname!=prev_winnerv1
+replace same_lastnamev1=0 if same_lastnamev1==.
 */
+
+sort counter winner
+// gen a var for lastname
+gen winr=candidate_fullname if winner==1 & unique_id==unique_id[_n-1]
+gen prev_winner=winr[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_winner=prev_winner[1] if unique_id==unique_id[_n-1]
+
+// gen a var for firstname
+gen prev_s=cand_surname if winner==1 & unique_id==unique_id[_n-1]
+gen prev_sur_winner=prev_s[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_sur_winner=prev_sur_winner[1] if unique_id==unique_id[_n-1]
+
+gen same_lastname=1 if cand_surname==prev_sur_winner & candidate_fullname!=prev_winner
+replace same_lastname=0 if same_lastname==.
+
+
+cap save "${root}/single_dis_lastnames.dta", replace
+
+}
+
+
+if `multi'==1 {
+
+clear all
+
+use "${root}/master_dataset.dta", clear
+
+keep if dis_type=="multim"
+
+sort counter
+
+forval i=1/15 {
+
+gen same`i'=1 if cand_surname==cand_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  // & counter[_n-`i']==counter-1
+
+}
+
+egen sum_same=rowtotal(same*)
+
+gen same_lastname=1 if sum_same!=0
+replace same_lastname=0 if same_lastname==.
+
+cap save "${root}/multi_dis_names.dta", replace
+
+}
+
+
+if `names'==1 {
+clear all
+
+use "${root}/single_dis_lastnames.dta", clear
+append using "${root}/multi_dis_names.dta"
+cap save "${root}/names.dta", replace
+
 }

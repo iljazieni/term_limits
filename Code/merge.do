@@ -9,12 +9,13 @@ sort state year month
 merge m:1 state using "${root}/term_limits_clean.dta"
 
 // CONCATENATE STATE-LEGBRANCH-DISTRICT
-egen unique_id=concat(state_abrv legbranch district)
-
+egen unique_id=concat(state_abrv legbranch distr_id)
 drop if sitting_legislator==0
 
-egen cand_elec=concat(election_id candidate_id)
-destring cand_elec, replace
+sort unique_id year
+egen unq_id_ele=concat(unique_id election_id)
+bys unq_id_ele: gen counter=_n if _n==1
+replace counter=sum(counter)
 
 cap save "${root}/master_dataset.dta", replace
 }
