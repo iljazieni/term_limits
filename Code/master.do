@@ -22,15 +22,15 @@ clear all
 
 local clean           0
 local merge           0
-local algorithm       1
+local algorithm       0
 local analysis        1
 
 
 
 if `clean'==1             do "${code}/clean.do"
 
-if `merge'==1             do "${code}/merge.do"
-
 if `algorithm'==1         do "${code}/algorithm.do"
+
+if `merge'==1             do "${code}/merge.do"
 
 if `analysis'==1          do "${code}/analysis.do"

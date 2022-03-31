@@ -5,7 +5,9 @@ local append          0
 local clean_up        0
 local single          0
 local multi           0
-local names           0
+local names1          0
+local names2          1
+local names3          1
 
 if `algo'==1 {
 
@@ -1453,11 +1455,137 @@ cap save "${root}/multi_dis_names.dta", replace
 }
 
 
-if `names'==1 {
+if `names1'==1 {
 clear all
 
 use "${root}/single_dis_lastnames.dta", clear
 append using "${root}/multi_dis_names.dta"
-cap save "${root}/names.dta", replace
+cap save "${root}/names1.dta", replace
+
+}
+
+
+if `names2'==1 {
+
+// single
+
+clear all
+
+use "${root}/master_dataset.dta", clear
+
+keep if dis_type=="single"
+
+gen trunc_surname=substr(cand_surname, 1,4)
+
+sort counter winner
+// gen a var for lastname
+gen winer=candidate_fullname if winner==1 & unique_id==unique_id[_n-1]
+gen prev_winer=winer[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_winer=prev_winer[1] if unique_id==unique_id[_n-1]
+
+// gen a var for firstname
+gen prev_su=trunc_surname if winner==1 & unique_id==unique_id[_n-1]
+gen prev_sur_winer=prev_su[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_sur_winer=prev_sur_winer[1] if unique_id==unique_id[_n-1]
+
+gen same_truncname=1 if trunc_surname==prev_sur_winer & candidate_fullname!=prev_winer
+replace same_truncname=0 if same_truncname==.
+
+
+cap save "${root}/single2.dta", replace
+
+clear all
+
+use "${root}/master_dataset.dta", clear
+
+keep if dis_type=="multim"
+
+gen trunc_surname=substr(cand_surname, 1,4)
+
+sort counter
+
+forval i=1/15 {
+
+gen same_`i'=1 if trunc_surname==trunc_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  // & counter[_n-`i']==counter-1
+
+}
+
+egen sumsame=rowtotal(same*)
+
+gen same_truncname=1 if sumsame!=0
+replace same_truncname=0 if same_truncname==.
+
+cap save "${root}/multi2.dta", replace
+
+clear all
+
+use "${root}/single2.dta", clear
+append using "${root}/multi2.dta"
+cap save "${root}/names2.dta", replace
+
+}
+
+
+if `names3'==1 {
+
+// single
+
+clear all
+
+use "${root}/master_dataset.dta", clear
+
+keep if dis_type=="single"
+
+gen initial=substr(cand_surname, 1,1)
+gen middle_name=substr(V46, 1,1)
+
+sort counter winner
+// gen a var for fullname
+gen wnr=candidate_fullname if winner==1 & unique_id==unique_id[_n-1]
+gen prev_wnr=wnr[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_wnr=prev_wnr[1] if unique_id==unique_id[_n-1]
+
+// gen a var for lastname
+gen prev_srn=initial if winner==1 & unique_id==unique_id[_n-1]
+gen prev_sur_wnr=prev_srn[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_sur_wnr=prev_sur_wnr[1] if unique_id==unique_id[_n-1]
+
+gen same_initial=1 if middle_name==prev_sur_wnr & candidate_fullname!=prev_wnr & prev_wnr!="" 
+replace same_initial=0 if same_initial==.
+
+
+cap save "${root}/single3.dta", replace
+
+clear all
+
+use "${root}/master_dataset.dta", clear
+
+keep if dis_type=="multim"
+
+gen initial=substr(cand_surname, 1,1)
+gen middle_name=substr(V46, 1,1)
+
+sort counter
+
+forval i=1/15 {
+
+gen same_`i'=1 if middle_name==initial[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  // & counter[_n-`i']==counter-1
+
+}
+
+egen sumsame=rowtotal(same*)
+
+gen same_initial=1 if sumsame!=0
+replace same_initial=0 if same_initial==.
+
+cap save "${root}/multi3.dta", replace
+
+clear all
+
+use "${root}/single2.dta", clear
+append using "${root}/multi3.dta"
+cap save "${root}/names3.dta", replace
+
+
 
 }
