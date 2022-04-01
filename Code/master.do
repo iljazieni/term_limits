@@ -23,14 +23,16 @@ clear all
 local clean           0
 local merge           0
 local algorithm       0
-local analysis        1
+local analysis        0
+local handcoding      1
 
 
+if `clean'==1               do "${code}/clean.do"
 
-if `clean'==1             do "${code}/clean.do"
+if `algorithm'==1           do "${code}/algorithm.do"
 
-if `algorithm'==1         do "${code}/algorithm.do"
+if `merge'==1               do "${code}/merge.do"
 
-if `merge'==1             do "${code}/merge.do"
+if `analysis'==1            do "${code}/analysis.do"
 
-if `analysis'==1          do "${code}/analysis.do"
+if `handcoding'==1          do "${code}/Tasks for P.do"

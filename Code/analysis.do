@@ -83,7 +83,7 @@ eststo: logit winner same_lastname limited_election lastname_limited if open_con
 eststo: logit winner same_lastname limited_election `controls' if open_contest==1
 eststo: logit winner same_lastname limited_election lastname_limited `controls' if open_contest==1
 
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t2_ln1_gt.tex", label p title(Logit - Open Contests only) style(tex) replace
+estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t2_n1_lgt.tex", label p title(Logit - Open Contests only) style(tex) replace
 
 
 // ELECTION LEVEL

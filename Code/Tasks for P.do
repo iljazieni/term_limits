@@ -1,3 +1,5 @@
+/*
+
 2/2/22 QUESTIONS
 
 1. How are elections that don't determine a sitting legislator different from those that do *for our purposes*? Why would we keep them in our dataset? If they don't determine a sitting legislator, doesn't that mean that those candidates don't serve in office and that 'win' doesn't count towards their term limit?
@@ -77,4 +79,240 @@
 
 3/2/2022
 
-AUDITING ALGORITHM THAT GENERATED THE FOLLOWING VARIABLES: term_limited, limited_seat, nep 
+AUDITING ALGORITHM THAT GENERATED THE FOLLOWING VARIABLES: term_limited, limited_seat
+
+*/
+
+local four               0
+local five               0
+local six                0
+local lists       1
+
+
+if `four'==1 {
+
+  // single
+
+  clear all
+
+  use "${root}/master_dataset.dta", clear
+
+  keep if dis_type=="single"
+
+  gen trunc_surname=substr(cand_surname, 1,4)
+
+  sort counter winner
+  // gen a var for lastname
+  gen winer=candidate_fullname if winner==1 & unique_id==unique_id[_n-1]
+  gen prev_winer=winer[_n-1] if unique_id==unique_id[_n-1]
+  bys counter: replace prev_winer=prev_winer[1] if unique_id==unique_id[_n-1]
+
+  // gen a var for firstname
+  gen prev_su=trunc_surname if winner==1 & unique_id==unique_id[_n-1]
+  gen prev_sur_winer=prev_su[_n-1] if unique_id==unique_id[_n-1]
+  bys counter: replace prev_sur_winer=prev_sur_winer[1] if unique_id==unique_id[_n-1]
+
+  gen same_truncname=1 if trunc_surname==prev_sur_winer & candidate_fullname!=prev_winer
+  replace same_truncname=0 if same_truncname==.
+
+
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single4.dta", replace
+
+  clear all
+
+  use "${root}/master_dataset.dta", clear
+
+  keep if dis_type=="multim"
+
+  gen trunc_surname=substr(cand_surname, 1,4)
+
+  sort counter
+
+  forval i=1/15 {
+
+  gen same_`i'=1 if trunc_surname==trunc_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  & counter[_n-`i']==counter-1
+  gen prv_name`i'=candidate_fullname[_n-`i'] if same_`i'==1
+  }
+
+  egen sumsame=rowtotal(same*)
+
+  gen same_truncname=1 if sumsame!=0
+  replace same_truncname=0 if same_truncname==.
+
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi4.dta", replace
+
+  clear all
+
+  use "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single4.dta", clear
+  append using "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi4.dta"
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\names4.dta", replace
+
+}
+
+
+
+
+if `five'==1 {
+
+  // single
+
+  clear all
+
+  use "${root}/master_dataset.dta", clear
+
+  keep if dis_type=="single"
+
+  gen trunc_surname=substr(cand_surname, 1,5)
+
+  sort counter winner
+  // gen a var for lastname
+  gen winer=candidate_fullname if winner==1 & unique_id==unique_id[_n-1]
+  gen prev_winer=winer[_n-1] if unique_id==unique_id[_n-1]
+  bys counter: replace prev_winer=prev_winer[1] if unique_id==unique_id[_n-1]
+
+  // gen a var for firstname
+  gen prev_su=trunc_surname if winner==1 & unique_id==unique_id[_n-1]
+  gen prev_sur_winer=prev_su[_n-1] if unique_id==unique_id[_n-1]
+  bys counter: replace prev_sur_winer=prev_sur_winer[1] if unique_id==unique_id[_n-1]
+
+  gen same_truncname=1 if trunc_surname==prev_sur_winer & candidate_fullname!=prev_winer
+  replace same_truncname=0 if same_truncname==.
+
+
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single5.dta", replace
+
+  clear all
+
+  use "${root}/master_dataset.dta", clear
+
+  keep if dis_type=="multim"
+
+  gen trunc_surname=substr(cand_surname, 1,5)
+
+  sort counter
+
+  forval i=1/15 {
+
+  gen same_`i'=1 if trunc_surname==trunc_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1 & counter[_n-`i']==counter-1
+gen prv_name`i'=candidate_fullname[_n-`i'] if same_`i'==1
+  }
+
+  egen sumsame=rowtotal(same*)
+
+  gen same_truncname=1 if sumsame!=0
+  replace same_truncname=0 if same_truncname==.
+
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi5.dta", replace
+
+  clear all
+
+  use "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single5.dta", clear
+  append using "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi5.dta"
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\names5.dta", replace
+
+}
+
+
+
+if `six'==1 {
+
+  // single
+
+  clear all
+
+  use "${root}/master_dataset.dta", clear
+
+  keep if dis_type=="single"
+
+  gen trunc_surname=substr(cand_surname, 1,6)
+
+  sort counter winner
+  // gen a var for lastname
+  gen winer=candidate_fullname if winner==1 & unique_id==unique_id[_n-1]
+  gen prev_winer=winer[_n-1] if unique_id==unique_id[_n-1]
+  bys counter: replace prev_winer=prev_winer[1] if unique_id==unique_id[_n-1]
+
+  // gen a var for firstname
+  gen prev_su=trunc_surname if winner==1 & unique_id==unique_id[_n-1]
+  gen prev_sur_winer=prev_su[_n-1] if unique_id==unique_id[_n-1]
+  bys counter: replace prev_sur_winer=prev_sur_winer[1] if unique_id==unique_id[_n-1]
+
+  gen same_truncname=1 if trunc_surname==prev_sur_winer & candidate_fullname!=prev_winer
+  replace same_truncname=0 if same_truncname==.
+
+
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single6.dta", replace
+
+  clear all
+
+  use "${root}/master_dataset.dta", clear
+
+  keep if dis_type=="multim"
+
+  gen trunc_surname=substr(cand_surname, 1,6)
+
+  sort counter
+
+  forval i=1/15 {
+
+  gen same_`i'=1 if trunc_surname==trunc_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1 & counter[_n-`i']==counter-1
+gen prv_name`i'=candidate_fullname[_n-`i'] if same_`i'==1
+  }
+
+  egen sumsame=rowtotal(same*)
+
+  gen same_truncname=1 if sumsame!=0
+  replace same_truncname=0 if same_truncname==.
+
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi6.dta", replace
+
+  clear all
+
+  use "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single6.dta", clear
+  append using "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi6.dta"
+  cap save "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\names6.dta", replace
+}
+
+
+if `lists' ==1 {
+clear all
+
+forval j=4/6 {
+
+use "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single`j'.dta", clear
+keep state legbranch year candidate_fullname cand_surname trunc_surname prev_winer same_truncname
+keep if same_truncname==1
+cap save   "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single_list`j'.dta", replace
+}
+
+clear all
+
+forval j=4/6 {
+
+use "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi`j'.dta", clear
+preserve
+keep caseid prv_name*
+replace prv_name3="" if caseid==152658  // dealing with 1 obs for which multiple prv_name* columns are nonempty
+reshape long prv_name, i(caseid) j(aux)
+keep if prv_name!=""
+tempfile names_long`j'
+sa `names_long`j''
+restore
+merge 1:1 caseid using `names_long`j'', gen(m`j')
+rename prv_name prev_winer
+keep if same_truncname==1
+cap save   "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi_list`j'.dta", replace
+}
+
+
+clear all
+
+forval j=4/6 {
+
+use "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi_list`j'.dta", clear
+append using "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single_list`j'.dta"
+sort dis_type counter
+cap save   "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\list`j'.dta", replace
+}
+
+}

@@ -3,9 +3,9 @@ clear all
 local algo            0
 local append          0
 local clean_up        0
-local single          0
-local multi           0
-local names1          0
+local single          1
+local multi           1
+local names1          1
 local names2          1
 local names3          1
 
@@ -1424,7 +1424,7 @@ gen same_lastname=1 if cand_surname==prev_sur_winner & candidate_fullname!=prev_
 replace same_lastname=0 if same_lastname==.
 
 
-cap save "${root}/single_dis_lastnames.dta", replace
+cap save "${root}/single1.dta", replace
 
 }
 
@@ -1441,7 +1441,7 @@ sort counter
 
 forval i=1/15 {
 
-gen same`i'=1 if cand_surname==cand_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  // & counter[_n-`i']==counter-1
+gen same`i'=1 if cand_surname==cand_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  & counter[_n-`i']==counter-1
 
 }
 
@@ -1450,7 +1450,7 @@ egen sum_same=rowtotal(same*)
 gen same_lastname=1 if sum_same!=0
 replace same_lastname=0 if same_lastname==.
 
-cap save "${root}/multi_dis_names.dta", replace
+cap save "${root}/multi1.dta", replace
 
 }
 
@@ -1458,8 +1458,8 @@ cap save "${root}/multi_dis_names.dta", replace
 if `names1'==1 {
 clear all
 
-use "${root}/single_dis_lastnames.dta", clear
-append using "${root}/multi_dis_names.dta"
+use "${root}/single1.dta", clear
+append using "${root}/multi1.dta"
 cap save "${root}/names1.dta", replace
 
 }
@@ -1506,7 +1506,7 @@ sort counter
 
 forval i=1/15 {
 
-gen same_`i'=1 if trunc_surname==trunc_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  // & counter[_n-`i']==counter-1
+gen same_`i'=1 if trunc_surname==trunc_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1 & counter[_n-`i']==counter-1
 
 }
 
@@ -1550,7 +1550,7 @@ gen prev_srn=initial if winner==1 & unique_id==unique_id[_n-1]
 gen prev_sur_wnr=prev_srn[_n-1] if unique_id==unique_id[_n-1]
 bys counter: replace prev_sur_wnr=prev_sur_wnr[1] if unique_id==unique_id[_n-1]
 
-gen same_initial=1 if middle_name==prev_sur_wnr & candidate_fullname!=prev_wnr & prev_wnr!="" 
+gen same_initial=1 if middle_name==prev_sur_wnr & candidate_fullname!=prev_wnr & prev_wnr!=""
 replace same_initial=0 if same_initial==.
 
 
@@ -1569,7 +1569,7 @@ sort counter
 
 forval i=1/15 {
 
-gen same_`i'=1 if middle_name==initial[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  // & counter[_n-`i']==counter-1
+gen same_`i'=1 if middle_name==initial[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  & counter[_n-`i']==counter-1
 
 }
 
