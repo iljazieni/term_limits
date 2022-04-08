@@ -86,7 +86,7 @@ AUDITING ALGORITHM THAT GENERATED THE FOLLOWING VARIABLES: term_limited, limited
 local four               0
 local five               0
 local six                0
-local lists       1
+local lists              1
 
 
 if `four'==1 {
@@ -312,6 +312,7 @@ forval j=4/6 {
 use "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\multi_list`j'.dta", clear
 append using "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\single_list`j'.dta"
 sort dis_type counter
+keep state legbranch year candidate_fullname cand_surname trunc_surname prev_winer same_truncname
 cap save   "C:\Users\EI87\Dropbox (YLS)\Term Limits\Dataset\Name Algos\list`j'.dta", replace
 }
 

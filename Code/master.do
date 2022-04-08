@@ -23,8 +23,8 @@ clear all
 local clean           0
 local merge           0
 local algorithm       0
-local analysis        0
-local handcoding      1
+local analysis        1
+local handcoding      0
 
 
 if `clean'==1               do "${code}/clean.do"

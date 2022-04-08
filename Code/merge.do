@@ -27,6 +27,7 @@ clear all
 use "${root}/term_limited_elections.dta", clear
 replace term_limited=0 if term_limited==.
 replace term_limited=1 if term_limited==2
+
 forval j=1/3 {
 
 merge 1:1 caseid using  "${root}/names`j'.dta", gen(merge_`j')
@@ -46,16 +47,23 @@ replace limited_election=1 if limited_election!=0       // taking care of cases 
 replace same_lastname=0 if same_lastname==.
 
 bys counter: egen incumbents_running=total(incumbent)
-gen open_contest=1 if incumbents_running==0
-replace open_contest=0 if incumbents_running!=0
+by counter: gen open_contest=1 if incumbents_running==0 & dis_type=="single"
+by counter: replace open_contest=1 if incumbents_running<nr_cand & dis_type=="multim"
+replace open_contest=0 if open_contest==.
+
+// same measure as above but using alternative var for incumbent
+
+bys counter: egen inc_running=total(alt_inc)
+by counter: gen open=1 if inc_running==0 & dis_type=="single"
+by counter: replace open=1 if inc_running<nr_cand & dis_type=="multim"
+replace open=0 if open==.
+
+
 
 // measures of nepotism / variables of interest
 gen lastname_limited=same_lastname*limited_election
 gen initial_limited=same_initial*limited_election
 gen truncname_limited=same_truncname*limited_election
-
-gen nepotism=1 if lastname_limited==1 & winner==1
-replace nepotism=0 if nepotism==.
 
 // fix issue with only 4 observations for which nr_cand=0
 replace nr_cand=3 if counter==99180 & unique_id=="RI169."
@@ -78,7 +86,9 @@ replace two_opponents=0 if two_opponents==.
 gen multiple_opponents=1 if nr_cand>3
 replace multiple_opponents=0 if multiple_opponents==.
 
-*/
+// drop unneccessary auxilliary vars
+drop inc1 inc2 inc3 inc4 inc5 inc6 inc7 inc8 inc9 inc10 inc11 inc12 inc13 inc14 inc15 sum_same sum_inc merge_1 merge_2 merge_3
+
 // gen var labels
 label var unopposed "Unopposed"
 label var one_opponent "One Opponent"
@@ -86,13 +96,19 @@ label var two_opponents "Two Opponents"
 label var multiple_opponents "Multiple Opponents"
 label var limited_election "Limited Election"
 label var same_lastname "Same lastname"
-label var same_truncname "4 consecutive strings"
+label var same_truncname "Shares Lastname"
 label var same_initial "middle name"
 label var open_contest "Open Contest"
 label var incumbents_running "Incumbents running"
 label var lastname_limited "Same lastname x Limited"
 label var truncname_limited "4 consec. str x Limited"
 label var initial_limited "Middle name x Limited"
+
+gen term_limits=1 if year>=yearenacted
+replace term_limits=0 if term_limits==.
+
+egen state_branch=concat(state legbranch)
+destring state_branch, replace
 
 cap save "${root}/analysis_dataset.dta", replace
 

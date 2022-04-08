@@ -3,11 +3,11 @@ clear all
 local algo            0
 local append          0
 local clean_up        0
-local single          1
-local multi           1
-local names1          1
-local names2          1
-local names3          1
+local single          0
+local multi           0
+local names1          0
+local names2          0
+local names3          0
 
 if `algo'==1 {
 
@@ -1424,6 +1424,15 @@ gen same_lastname=1 if cand_surname==prev_sur_winner & candidate_fullname!=prev_
 replace same_lastname=0 if same_lastname==.
 
 
+// gen a new incumbency var
+gen prev_inc=candidate_fullname if winner==1 & unique_id==unique_id[_n-1]
+gen prev_inc_winner=prev_inc[_n-1] if unique_id==unique_id[_n-1]
+bys counter: replace prev_inc_winner=prev_inc_winner[1] if unique_id==unique_id[_n-1]
+
+gen alt_inc=1 if candidate_fullname==prev_inc_winner
+replace alt_inc=0 if alt_inc==.
+
+
 cap save "${root}/single1.dta", replace
 
 }
@@ -1443,12 +1452,19 @@ forval i=1/15 {
 
 gen same`i'=1 if cand_surname==cand_surname[_n-`i'] & candidate_fullname!=candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  & counter[_n-`i']==counter-1
 
+gen inc`i'=1 if candidate_fullname==candidate_fullname[_n-`i'] & election_id!=election_id[_n-`i'] & unique_id==unique_id[_n-`i']  & winner[_n-`i']==1  & counter[_n-`i']==counter-1
+
 }
 
 egen sum_same=rowtotal(same*)
 
+egen sum_inc=rowtotal(inc*)
+
 gen same_lastname=1 if sum_same!=0
 replace same_lastname=0 if same_lastname==.
+
+gen alt_inc=1 if sum_inc!=0
+replace alt_inc=0 if alt_inc==.
 
 cap save "${root}/multi1.dta", replace
 
@@ -1585,7 +1601,5 @@ clear all
 use "${root}/single2.dta", clear
 append using "${root}/multi3.dta"
 cap save "${root}/names3.dta", replace
-
-
 
 }
