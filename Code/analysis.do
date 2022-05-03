@@ -13,10 +13,12 @@ Output: coefficients of interest
 local test                0
 local gender              0
 local output1             0
-local output2             1
+local output2             0
+local toy_output          1
 
 clear all
 global controls "unopposed one_opponent two_opponents"
+global lcontrols "i.unopposed i.one_opponent i.two_opponents"
 
 if `test'==1 {
 
@@ -94,210 +96,11 @@ cap save "${root}/analysis_gender_s.dta", replace
 }
 
 
-if `output1'==1 {
-
-clear all
-eststo clear
-
-// ---------------------------------- // MEASURE 1 OF LAST NAME
-
-use "${root}/analysis_dataset.dta", clear
-
-// LPM
-
-eststo: reg winner same_lastname limited_election
-eststo: reg winner same_lastname limited_election lastname_limited
-eststo: reg winner same_lastname limited_election $controls
-eststo: reg winner same_lastname limited_election lastname_limited $controls
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t1_n1_ols.tex", label p title(LPM - Full Sample) style(tex) replace
-
-eststo clear
-
-eststo: reg winner same_lastname limited_election if open_contest==1
-eststo: reg winner same_lastname limited_election lastname_limited if open_contest==1
-eststo: reg winner same_lastname limited_election $controls if open_contest==1
-eststo: reg winner same_lastname limited_election lastname_limited $controls if open_contest==1
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t2_n1_ols.tex", label p title(LPM - Open Contests only) style(tex) replace
-
-// LOGIT
-eststo clear
-
-eststo: logit winner same_lastname limited_election
-eststo: logit winner same_lastname limited_election lastname_limited
-eststo: logit winner same_lastname limited_election $controls
-eststo: logit winner same_lastname limited_election lastname_limited $controls
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t1_n1_lgt.tex", label p title(Logit - Full Sample) style(tex) replace
-
-eststo clear
-
-eststo: logit winner same_lastname limited_election if open_contest==1
-eststo: logit winner same_lastname limited_election lastname_limited if open_contest==1
-eststo: logit winner same_lastname limited_election $controls if open_contest==1
-eststo: logit winner same_lastname limited_election lastname_limited $controls if open_contest==1
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t2_n1_lgt.tex", label p title(Logit - Open Contests only) style(tex) replace
-
-
-// ELECTION LEVEL
-eststo clear
-// LPM
-
-use "${root}/election_level_data.dta", clear
-
-eststo: reg same_lastname limited_election if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: reg same_lastname limited_election $controls if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: reg single_cand_election limited_election same_lastname lastname_limited if open_contest==1
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t3_n1_ols.tex", label p title(Unit of Obs: Election - Open Contest Only - LPM) style(tex) replace
-
-// LOGIT
-eststo clear
-
-use "${root}/election_level_data.dta", clear
-
-eststo: logit same_lastname limited_election if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: logit same_lastname limited_election $controls if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: logit single_cand_election limited_election same_lastname lastname_limited if open_contest==1
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t3_n1_lgt.tex", label p title(Unit of Obs: Election - Open Contest Only - Logit) style(tex) replace
-
-
-// -------------------------------  // MEASURE 2 OF LAST NAME - 4 consecutive obs
-clear all
-eststo clear
-
-use "${root}/analysis_dataset.dta", clear
-
-// LPM
-
-eststo: reg winner same_truncname limited_election,
-eststo: reg winner same_truncname limited_election truncname_limited, vce(cl state)
-eststo: reg winner same_truncname limited_election $controls
-eststo: reg winner same_truncname limited_election truncname_limited $controls
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t1_n2_ols.tex", label p title(LPM - Full Sample) style(tex) replace
-
-eststo clear
-
-eststo: reg winner same_truncname limited_election if open_contest==1
-eststo: reg winner same_truncname limited_election truncname_limited if open_contest==1
-eststo: reg winner same_truncname limited_election $controls if open_contest==1
-eststo: reg winner same_truncname limited_election truncname_limited $controls if open_contest==1
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t2_n2_ols.tex", label p title(LPM - Open Contests only) style(tex) replace
-
-// LOGIT
-eststo clear
-
-eststo: logit winner same_truncname limited_election
-eststo: logit winner same_truncname limited_election truncname_limited
-eststo: logit winner same_truncname limited_election $controls
-eststo: logit winner same_truncname limited_election truncname_limited $controls
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t1_n2_lgt.tex", label p title(Logit - Full Sample) style(tex) replace
-
-eststo clear
-
-eststo: logit winner same_truncname limited_election if open_contest==1
-eststo: logit winner same_truncname limited_election truncname_limited if open_contest==1
-eststo: logit winner same_truncname limited_election $controls if open_contest==1
-eststo: logit winner same_truncname limited_election truncname_limited $controls if open_contest==1
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t2_n2_lgt.tex", label p title(Logit - Open Contests only) style(tex) replace
-
-
-// ELECTION LEVEL
-eststo clear
-// LPM
-
-use "${root}/election_level_data.dta", clear
-
-eststo: reg same_truncname limited_election if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: reg same_truncname limited_election $controls if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: reg single_cand_election limited_election same_truncname truncname_limited if open_contest==1
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t3_n2_ols.tex", label p title(Unit of Obs: Election - Open Contest Only - LPM) style(tex) replace
-
-// LOGIT
-eststo clear
-
-use "${root}/election_level_data.dta", clear
-
-eststo: logit same_truncname limited_election if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: logit same_truncname limited_election $controls if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: logit single_cand_election limited_election same_truncname truncname_limited if open_contest==1
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t3_n2_lgt.tex", label p title(Unit of Obs: Election - Open Contest Only - Logit) style(tex) replace
-
-/* ------------------------------ // MEASURE 3 OF LAST NAME - matching initial of middle name with initial of previous incumbent's lastname
-
-clear all
-eststo clear
-
-use "${root}/analysis_dataset.dta", clear
-
-// LPM
-
-eststo: reg winner same_initial limited_election
-eststo: reg winner same_initial limited_election initial_limited
-eststo: reg winner same_initial limited_election $controls
-eststo: reg winner same_initial limited_election initial_limited $controls
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t1_n3_ols.tex", label p title(LPM - Full Sample) style(tex) replace
-
-eststo clear
-
-eststo: reg winner same_initial limited_election if open_contest==1
-eststo: reg winner same_initial limited_election initial_limited if open_contest==1
-eststo: reg winner same_initial limited_election $controls if open_contest==1
-eststo: reg winner same_initial limited_election initial_limited $controls if open_contest==1
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t2_n3_ols.tex", label p title(LPM - Open Contests only) style(tex) replace
-
-// LOGIT
-eststo clear
-
-eststo: logit winner same_initial limited_election
-eststo: logit winner same_initial limited_election initial_limited
-eststo: logit winner same_initial limited_election $controls
-eststo: logit winner same_initial limited_election initial_limited $controls
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t1_n3_lgt.tex", label p title(Logit - Full Sample) style(tex) replace
-
-eststo clear
-
-eststo: logit winner same_initial limited_election if open_contest==1
-eststo: logit winner same_initial limited_election initial_limited if open_contest==1
-eststo: logit winner same_initial limited_election $controls if open_contest==1
-eststo: logit winner same_initial limited_election initial_limited $controls if open_contest==1
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t2_n3_lgt.tex", label p title(Logit - Open Contests only) style(tex) replace
-
-
-// ELECTION LEVEL
-eststo clear
-// LPM
-
-use "${root}/election_level_data.dta", clear
-
-eststo: reg same_initial limited_election if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: reg same_initial limited_election $controls if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: reg single_cand_election limited_election same_initial initial_limited if open_contest==1
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t3_n3_ols.tex", label p title(Unit of Obs: Election - Open Contest Only - LPM) style(tex) replace
-
-// LOGIT
-eststo clear
-
-use "${root}/election_level_data.dta", clear
-
-eststo: logit same_initial limited_election if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-eststo: logit same_initial limited_election $controls if open_contest==1 // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
-
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\t3_n3_lgt.tex", label p title(Unit of Obs: Election - Open Contest Only - Logit) style(tex) replace
-*/
-
-}
-
 // NOTES: CLUSTER ALL STANDARD ERRORS - ALSO RUN THE SAME OLS SPEICIFICATIONS WITH ROBUST SE INSTEAD OF CLUSTERED AND LOOK AT THE DIFFERENCE
 // FOR LOGIT - RUN ALL SPECIFICATIONS USING "OR" OPTION WHICH GIVES TRANSFORMED COEFFICIENT ESTIMATES WHICH ARE ODDS RATIONS AND ARE INTERPRETABLE
 
 
-if `output2' == 1 {
+if `output1' == 1 {
 
 use "${root}/analysis_gender.dta", clear
 
@@ -305,73 +108,83 @@ eststo clear
 
 xtset state_branch
 
-eststo clear
 
 // LPM
+eststo clear
 
 // INTERACTIONS
-eststo: xtreg winner same_truncname##limited_election open $controls , fe vce(cl state_branch)
-eststo: xtreg winner limited_election##gender open $controls , fe vce(cl state_branch)
-eststo: xtreg winner same_truncname##limited_election##gender open $controls , fe vce(cl state_branch)
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\lpm.tex", p label  title(Unit of Obs: Candidate - LPM with State-Branch Fixed Effects) noomitted style(tex) replace
-
+eststo: xtreg winner same_truncname##limited_election open $controls i.year, fe vce(cl state_branch)
+eststo: xtreg winner limited_election##gender open $controls i.year, fe vce(cl state_branch)
+eststo: xtreg winner same_truncname##limited_election##gender open $controls i.year, fe vce(cl state_branch)
+estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\lpm.tex", p label  title(Unit of Obs: Candidate - LPM with State-Branch Fixed Effects) noomitted style(tex) drop(19* 20*) nobaselevels star(* 0.10 ** 0.05) replace
 
 eststo clear
 // INTERACTIONS LIMITED TO OPEN==1
 
-eststo: xtreg winner same_truncname##limited_election $controls if open==1, fe vce(cl state_branch)
-eststo: xtreg winner limited_election##gender $controls if open==1, fe vce(cl state_branch)
-eststo: xtreg winner same_truncname##limited_election##gender $controls if open==1, fe vce(cl state_branch)
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\lpm_open.tex", p label noomitted title(Unit of Obs: Candidate - LPM with State-Branch Fixed Effects - Subsample of Open Contests only) style(tex) replace
+eststo: xtreg winner same_truncname##limited_election $controls i.year if open==1, fe vce(cl state_branch)
+eststo: xtreg winner limited_election##gender $controls i.year if open==1, fe vce(cl state_branch)
+eststo: xtreg winner same_truncname##limited_election##gender $controls i.year if open==1, fe vce(cl state_branch)
+estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\lpm_open.tex", p label noomitted title(Unit of Obs: Candidate - LPM with State-Branch Fixed Effects - Subsample of Open Contests only) drop(19* 20*) nobaselevels star(* 0.10 ** 0.05) style(tex) replace
 
 // Logit
 eststo clear
 // INTERACTIONS
-eststo: logit winner i.same_truncname##i.limited_election i.open $controls , or vce(cl state_branch)
-eststo: logit winner i.limited_election##i.gender i.open $controls , or vce(cl state_branch)
-eststo: logit winner i.same_truncname##i.limited_election##i.gender i.open $controls , or vce(cl state_branch)
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\logit.tex", p label noomitted title(Unit of Obs: Candidate - Logit - Fixed Effects) style(tex) replace
+eststo: logit winner i.same_truncname##i.limited_election i.open i.year $lcontrols , or vce(cl state_branch)
+eststo: logit winner i.limited_election##i.gender i.open i.year $lcontrols , or vce(cl state_branch)
+eststo: logit winner i.same_truncname##i.limited_election##i.gender i.open i.year $lcontrols , or vce(cl state_branch)
+estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\logit.tex", p label noomitted title(Unit of Obs: Candidate - Logit (odds ratios reported)) drop(19* 20*) nobaselevels star(* 0.10 ** 0.05) style(tex) replace
 
 eststo clear
 // INTERACTIONS LIMITED TO OPEN==1
 
-eststo: logit winner i.same_truncname##i.limited_election $controls if open==1, or vce(cl state_branch)
-eststo: logit winner i.limited_election##i.gender $controls if open==1, or vce(cl state_branch)
-eststo: logit winner i.same_truncname##i.limited_election##gender $controls if open==1, or vce(cl state_branch)
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\logit_open.tex", p label noomitted title(Unit of Obs: Candidate - Logit - Subsample of Open Contests only) style(tex) replace
+eststo: logit winner i.same_truncname##i.limited_election $lcontrols i.year if open==1, or vce(cl state_branch)
+eststo: logit winner i.limited_election##i.gender $lcontrols i.year if open==1, or vce(cl state_branch)
+eststo: logit winner i.same_truncname##i.limited_election##gender $lcontrols i.year if open==1, or vce(cl state_branch)
+estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\logit_open.tex", p label noomitted star(* 0.10 ** 0.05) title(Unit of Obs: Candidate - Logit - Subsample of Open Contests only) drop(19* 20*) nobaselevels style(tex) replace
 
-______________________________________________ // USING TERM_LIMIT DUMMY
+}
 
-// INTERACTIONS WITH TERM LIMITS
-eststo: xtreg winner same_truncname##term_limits open $controls , fe vce(cl state_branch)
-eststo: xtreg winner term_limits##gender open $controls , fe vce(cl state_branch)
-eststo: xtreg winner same_truncname##term_limits##gender open $controls , fe vce(cl state_branch)
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\lpm_tlims.tex", p label  title(Unit of Obs: Candidate - LPM with State-Branch Fixed Effects) noomitted style(tex) replace
 
+if `output2'==1 {
 
 eststo clear
-// INTERACTIONS LIMITED TO OPEN==1
 
-eststo: xtreg winner same_truncname##term_limits $controls if open==1, fe vce(cl state_branch)
-eststo: xtreg winner term_limits##gender $controls if open==1, fe vce(cl state_branch)
-eststo: xtreg winner same_truncname##term_limits##gender $controls if open==1, fe vce(cl state_branch)
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\lpm_open_tlims.tex", p label noomitted title(Unit of Obs: Candidate - LPM with State-Branch Fixed Effects - Subsample of Open Contests only) style(tex) replace
+use "${root}/analysis_gender.dta", clear
+keep if winner==1
+xtset state_branch
 
-// Logit
-eststo clear
-// INTERACTIONS
-eststo: logit winner i.same_truncname##i.term_limits i.open $controls , or vce(cl state_branch)
-eststo: logit winner i.term_limits##i.gender i.open $controls , or vce(cl state_branch)
-eststo: logit winner i.same_truncname##i.term_limits##i.gender i.open $controls , or vce(cl state_branch)
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\logit_tlims.tex", p label noomitted title(Unit of Obs: Candidate - Logit - Fixed Effects) style(tex) replace
+eststo: xtreg same_truncname limited_election##gender $controls open i.year, fe vce(cl state_branch) // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
+eststo: xtreg same_truncname limited_election##gender $controls i.year if open==1, fe vce(cl state_branch) // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
+eststo: logit same_truncname i.limited_election##i.gender $controls open i.year, or vce(cl state_branch) // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
+eststo: logit same_truncname i.limited_election##i.gender $controls i.year if open==1, or vce(cl state_branch) // this is the specification where LHS=1 if winner of that election has the same last name as previous incumbent and RHS is whether this is a term limited election
+estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\election_level.tex", label p title(Unit of Obs: Election - LPM (1) \& (2) | Logit (3) \& (4) | Open Contests only (2) \& (4)) style(tex) noomitted nobaselevels drop(19* 20* unopposed one_opponent two_opponents) star(* 0.10 ** 0.05) replace
 
-eststo clear
-// INTERACTIONS LIMITED TO OPEN==1
+}
 
-eststo: logit winner i.same_truncname##i.term_limits $controls if open==1, or vce(cl state_branch)
-eststo: logit winner i.term_limits##i.gender $controls if open==1, or vce(cl state_branch)
-eststo: logit winner i.same_truncname##i.term_limits##gender $controls if open==1, or vce(cl state_branch)
-estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\logit_open_tlims.tex", p label noomitted title(Unit of Obs: Candidate - Logit - Subsample of Open Contests only) style(tex) replace
 
+if `toy_output' == 1 {
+
+  // SEEMINGLY UNRELATED REGRESSIONS
+  use "${root}/analysis_gender.dta", clear
+  eststo clear
+  bys election_id: egen elec_shares_lastname=total(same_truncname)
+  replace elec_shares_lastname=1 if elec_shares_lastname!=0
+  label var elec_shares_lastname "Some cand. shares name"
+
+  xtset state_branch
+
+  keep if winner==1
+
+  eststo: xtreg elec_shares_lastname limited_election##gender $controls open i.year, fe vce(cl state_branch)
+  eststo: xtreg elec_shares_lastname limited_election##gender $controls i.year if open==1, fe vce(cl state_branch)
+  estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\elec_level.tex", label p title(Unit of Obs: Election - (1) Full Sample; (2) Open Contests) style(tex) noomitted nobaselevels drop(19* 20* unopposed one_opponent two_opponents) star(* 0.10 ** 0.05)  replace
+
+  eststo clear
+
+  sureg (elec_shares_lastname limited_election##gender unopposed one_opponent two_opponents  i.year open) (same_truncname limited_election##gender unopposed one_opponent two_opponents  i.year open)
+  eststo: suregr, cluster(state_branch)
+  sureg (elec_shares_lastname limited_election##gender unopposed one_opponent two_opponents  i.year if open==1) (same_truncname limited_election##gender unopposed one_opponent two_opponents  i.year if open==1)
+  eststo: suregr, cluster(state_branch)
+  estwide using "C:\Users\ei87\Dropbox (YLS)\Term Limits\Stata Output\sureg.tex", label p title(Unit of Obs: Election | (1) Full Sameple, (2) Open Contests only) style(tex) noomitted nobaselevels drop(19* 20* unopposed one_opponent two_opponents) star(* 0.10 ** 0.05)  replace
 
 }

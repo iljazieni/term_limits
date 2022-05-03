@@ -21,9 +21,9 @@ clear all
 // Switches
 
 local clean           0
-local merge           0
+local merge           1
 local algorithm       0
-local analysis        1
+local analysis        0
 local handcoding      0
 
 

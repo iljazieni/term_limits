@@ -15,3 +15,22 @@ br state year month legbranch distr_id election_id winner incumbent candidate_fu
 
 
 br year distr_id candidate_fullname winner incumbent term_limited limited_seat terms_won max_year seat
+
+
+
+///// temp delete
+
+
+if `output2'==1 {
+
+eststo clear
+
+use "${root}/analysis_gender.dta", clear
+
+// transform into UNIT OF ANALYSIS: Election
+keep if winner==1
+
+
+
+
+}

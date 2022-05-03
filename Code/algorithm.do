@@ -1429,8 +1429,13 @@ gen prev_inc=candidate_fullname if winner==1 & unique_id==unique_id[_n-1]
 gen prev_inc_winner=prev_inc[_n-1] if unique_id==unique_id[_n-1]
 bys counter: replace prev_inc_winner=prev_inc_winner[1] if unique_id==unique_id[_n-1]
 
-gen alt_inc=1 if candidate_fullname==prev_inc_winner
-replace alt_inc=0 if alt_inc==.
+sort unique_id year
+bys unique_id: gen first_year=year[_n==1]
+bys unique_id: carryforward first, replace
+gen year_counter=year-first_year
+bys unique_id: gen alt_inc=1 if candidate_fullname==prev_inc_winner & year_counter!=0
+replace alt_inc=incumbent if year_counter==0
+// replace alt_inc=0 if alt_inc==.
 
 
 cap save "${root}/single1.dta", replace
